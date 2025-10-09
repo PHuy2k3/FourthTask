@@ -17,3 +17,4 @@ D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data\obj\Debug\net9.0\refint\Cinema.Dat
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data\obj\Debug\net9.0\Cinema.Data.pdb
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data\obj\Debug\net9.0\Cinema.Data.genruntimeconfig.cache
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data\obj\Debug\net9.0\ref\Cinema.Data.dll
+D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data\obj\Debug\net9.0\Cinema.Data.sourcelink.json

@@ -240,7 +240,7 @@
               "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\AdminShowtimesController.cs",
               "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminShowtimesController.cs",
               "RelativeToolTip": "Cinema.Api\\Controllers\\AdminShowtimesController.cs",
-              "ViewState": "AgIAAAYBAAAAAAAAAAAAABEBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAN0AAAAAAAAAAAAqwCQBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-06T03:06:04.935Z",
               "EditorCaption": ""
@@ -255,8 +255,7 @@
               "RelativeToolTip": "Cinema.Api\\Controllers\\AdminCinemasController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAEAAAABJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T03:03:44.105Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-06T03:03:44.105Z"
             },
             {
               "$type": "Document",
@@ -268,8 +267,7 @@
               "RelativeToolTip": "Cinema.Api\\Controllers\\ShowtimesController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAF8AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T02:26:50.747Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-06T02:26:50.747Z"
             },
             {
               "$type": "Document",
@@ -281,8 +279,7 @@
               "RelativeToolTip": "Cinema.Api\\Controllers\\ProfileController.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T02:09:21.903Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-06T02:09:21.903Z"
             },
             {
               "$type": "Document",
@@ -294,8 +291,7 @@
               "RelativeToolTip": "Cinema.Api\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:55:42.185Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:55:42.185Z"
             },
             {
               "$type": "Document",
@@ -307,8 +303,7 @@
               "RelativeToolTip": "Cinema.Biz\\Repository\\ShowtimeRepository.cs",
               "ViewState": "AgIAADMAAAAAAAAAAADwvzYAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T08:54:24.127Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T08:54:24.127Z"
             },
             {
               "$type": "Document",
@@ -332,8 +327,7 @@
               "RelativeToolTip": "Cinema.Biz\\IRepository\\IShowtimeRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T08:14:21.872Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T08:14:21.872Z"
             },
             {
               "$type": "Document",
@@ -345,8 +339,7 @@
               "RelativeToolTip": "Cinema.Data.Model\\Showtime.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:06:47.043Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:06:47.043Z"
             },
             {
               "$type": "Document",

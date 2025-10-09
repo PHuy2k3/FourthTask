@@ -7,7 +7,7 @@ public class ShowtimeSeat
     public Showtime Showtime { get; set; } = null!;
     public int SeatId { get; set; }
     public Seat Seat { get; set; } = null!;
-    public string Status { get; set; } = "Available"; // Available, Locked, Sold
+    public string Status { get; set; } = "Available"; // Available, Locked, Booked
     public DateTime? LockedUntil { get; set; }
     public decimal Price { get; set; }
 }

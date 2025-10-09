@@ -82,3 +82,4 @@ D:\CMC_Task\fourth-task\be\Cinema\Cinema.Api\obj\Debug\net9.0\refint\Cinema.Api.
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Api\obj\Debug\net9.0\Cinema.Api.pdb
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Api\obj\Debug\net9.0\Cinema.Api.genruntimeconfig.cache
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Api\obj\Debug\net9.0\ref\Cinema.Api.dll
+D:\CMC_Task\fourth-task\be\Cinema\Cinema.Api\obj\Debug\net9.0\Cinema.Api.sourcelink.json

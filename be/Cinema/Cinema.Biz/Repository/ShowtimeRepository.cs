@@ -30,7 +30,7 @@ namespace Cinema.Biz.Repo
                 var localDay = DateTime.SpecifyKind(date.Value.Date, DateTimeKind.Unspecified);
 
                 // Trên Windows dùng "SE Asia Standard Time". Nếu chạy Linux, đổi sang "Asia/Bangkok".
-                var tz = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+                var tz = ResolveSeAsiaTimeZone();
                 var startUtc = TimeZoneInfo.ConvertTimeToUtc(localDay, tz);
                 var endUtc = startUtc.AddDays(1);
 
@@ -70,8 +70,9 @@ namespace Cinema.Biz.Repo
             var now = DateTime.UtcNow;
             var until = now.AddSeconds(Math.Max(30, lockSeconds));
 
+            var seatIdsArray = seatIds.ToArray();
             var seats = await _db.ShowtimeSeats
-                .Where(ss => ss.ShowtimeId == showtimeId && seatIds.Contains(ss.SeatId))
+                .Where(ss => ss.ShowtimeId == showtimeId && (seatIdsArray.Contains(ss.SeatId) || seatIdsArray.Contains(ss.Id)))
                 .ToListAsync(ct);
 
             int lockedCount = 0;
@@ -92,6 +93,25 @@ namespace Cinema.Biz.Repo
             if (lockedCount == 0) return false;
             await _db.SaveChangesAsync(ct);
             return true;
+        }
+
+        private static TimeZoneInfo ResolveSeAsiaTimeZone()
+        {
+            const string windowsId = "SE Asia Standard Time";
+            const string ianaId = "Asia/Bangkok";
+
+            try
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById(windowsId);
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById(ianaId);
+            }
+            catch (InvalidTimeZoneException)
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById(ianaId);
+            }
         }
     }
 }

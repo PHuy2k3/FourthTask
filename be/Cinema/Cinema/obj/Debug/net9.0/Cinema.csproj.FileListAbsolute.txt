@@ -10,3 +10,4 @@ D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.dll
 D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\refint\Cinema.dll
 D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.pdb
 D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\ref\Cinema.dll
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.sourcelink.json

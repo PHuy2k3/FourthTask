@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cinema.Biz.Irepo;
 using Cinema.Data;
@@ -17,22 +19,24 @@ public class BookingsController : ControllerBase
         _bookings = bookings; _db = db;
     }
 
-    public record CreateBookingReq(int ShowtimeId, IReadOnlyCollection<int> ShowtimeSeatIds, int? UserId);
-
+    public record CreateBookingReq(
+            [Required, Range(1, int.MaxValue)] int ShowtimeId,
+            [Required, MinLength(1)] IReadOnlyCollection<int> ShowtimeSeatIds,
+            [Required, Range(1, int.MaxValue, ErrorMessage = "UserId must be greater than zero")] int UserId);
     // POST /api/bookings
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateBookingReq req, CancellationToken ct)
     {
-        if (req.ShowtimeSeatIds is null || req.ShowtimeSeatIds.Count == 0)
-            return BadRequest("ShowtimeSeatIds is required");
-
-        // TODO: lấy userId từ JWT claims; tạm chấp nhận UserId gửi kèm cho dev nhanh
-        var userId = req.UserId ?? 0;
+        var userId = req.UserId;
         if (userId <= 0)
-        {
-            // nếu chưa có auth, có thể tạo guest user hoặc trả lỗi:
-            return BadRequest("UserId is required (or enable JWT and take from claims).");
-        }
+            ModelState.AddModelError(nameof(CreateBookingReq.UserId), "UserId must be greater than zero");
+
+        if (!ModelState.IsValid)
+            return ValidationProblem(ModelState);
+
+        var userExists = await _db.Users.AnyAsync(u => u.Id == userId, ct);
+        if (!userExists)
+            return BadRequest($"UserId {userId} does not exist");
 
         var booking = await _bookings.CreateFromLockedSeatsAsync(userId, req.ShowtimeId, req.ShowtimeSeatIds, ct);
         return Ok(new

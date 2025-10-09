@@ -9,3 +9,4 @@ D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data.Model\obj\Debug\net9.0\Cinema.Data
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data.Model\obj\Debug\net9.0\refint\Cinema.Data.Model.dll
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data.Model\obj\Debug\net9.0\Cinema.Data.Model.pdb
 D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data.Model\obj\Debug\net9.0\ref\Cinema.Data.Model.dll
+D:\CMC_Task\fourth-task\be\Cinema\Cinema.Data.Model\obj\Debug\net9.0\Cinema.Data.Model.sourcelink.json
