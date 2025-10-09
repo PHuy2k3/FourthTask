@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cinema.Biz.Irepo;
@@ -22,23 +23,38 @@ public class BookingsController : ControllerBase
     public record CreateBookingReq(
             [Required, Range(1, int.MaxValue)] int ShowtimeId,
             [Required, MinLength(1)] IReadOnlyCollection<int> ShowtimeSeatIds,
-            [Required, Range(1, int.MaxValue, ErrorMessage = "UserId must be greater than zero")] int UserId);
+            int? UserId);    
     // POST /api/bookings
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateBookingReq req, CancellationToken ct)
     {
         var userId = req.UserId;
-        if (userId <= 0)
+        if (userId is null)
+        {
+            var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(claim, out var parsed) || parsed <= 0)
+            {
+                ModelState.AddModelError(nameof(CreateBookingReq.UserId), "UserId must be greater than zero");
+            }
+            else
+            {
+                userId = parsed;
+            }
+        }
+        else if (userId <= 0)
+        {
             ModelState.AddModelError(nameof(CreateBookingReq.UserId), "UserId must be greater than zero");
+        }
 
         if (!ModelState.IsValid)
             return ValidationProblem(ModelState);
 
-        var userExists = await _db.Users.AnyAsync(u => u.Id == userId, ct);
+        var userIdValue = userId.Value;
+        var userExists = await _db.Users.AnyAsync(u => u.Id == userIdValue, ct); 
         if (!userExists)
-            return BadRequest($"UserId {userId} does not exist");
+            return BadRequest($"UserId {userIdValue} does not exist");
 
-        var booking = await _bookings.CreateFromLockedSeatsAsync(userId, req.ShowtimeId, req.ShowtimeSeatIds, ct);
+        var booking = await _bookings.CreateFromLockedSeatsAsync(userIdValue, req.ShowtimeId, req.ShowtimeSeatIds, ct);
         return Ok(new
         {
             booking.Id,
