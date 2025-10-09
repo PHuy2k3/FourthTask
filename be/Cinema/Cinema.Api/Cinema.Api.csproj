@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Cinema.Biz\Cinema.Biz.csproj" />
+		<ProjectReference Include="..\Cinema.Biz.Model\Cinema.Biz.Model.csproj" />
+		<ProjectReference Include="..\Cinema.Data\Cinema.Data.csproj" />
+		<ProjectReference Include="..\Cinema\Cinema.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
+	</ItemGroup>
+</Project>

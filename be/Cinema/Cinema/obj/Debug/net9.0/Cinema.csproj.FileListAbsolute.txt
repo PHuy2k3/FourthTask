@@ -1,0 +1,12 @@
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.csproj.AssemblyReference.cache
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.GeneratedMSBuildEditorConfig.editorconfig
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.AssemblyInfoInputs.cache
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.AssemblyInfo.cs
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.csproj.CoreCompileInputs.cache
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\bin\Debug\net9.0\Cinema.deps.json
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\bin\Debug\net9.0\Cinema.dll
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\bin\Debug\net9.0\Cinema.pdb
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.dll
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\refint\Cinema.dll
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\Cinema.pdb
+D:\CMC_Task\fourth-task\be\Cinema\Cinema\obj\Debug\net9.0\ref\Cinema.dll
