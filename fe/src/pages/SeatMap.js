@@ -3,10 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../lib/api';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
+import { useAuth } from '../context/AuthContext';
+
 
 export default function SeatMap() {
   const { showtimeId } = useParams();
   const nav = useNavigate();
+  const { profile } = useAuth();
   const [data, setData] = useState(null);
   const [selectedCodes, setSelectedCodes] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -53,11 +56,23 @@ export default function SeatMap() {
     try {
       setLoading(true);
       await api.post('/api/showtimes/lock-seats', { showtimeId: parseInt(showtimeId, 10), seatIds, lockSeconds: 300 });
-      const { data: booking } = await api.post('/api/bookings', { showtimeId: parseInt(showtimeId, 10), showtimeSeatIds });
+      const parsedUserId = Number.parseInt(profile?.uid, 10);
+            const bookingPayload = {
+              showtimeId: parseInt(showtimeId, 10),
+              showtimeSeatIds
+            };
+            if (Number.isInteger(parsedUserId) && parsedUserId > 0) {
+              bookingPayload.userId = parsedUserId;
+            }
+      const { data: booking } = await api.post('/api/bookings', bookingPayload);      
       alert(`Đặt vé thành công: ${booking.orderCode} - Tổng ${booking.amount}`);
       nav('/showtimes');
     } catch (e) {
-      alert(e.response?.data?.message ?? 'Không giữ được ghế/đặt vé');
+      alert(e.response?.data?.message ?? 'Không giữ được ghế/đặt vé'); const payload = e.response?.data;
+      const validation = payload?.errors
+        ? Object.values(payload.errors).flat().join('\n')
+        : null;
+      alert(validation || payload?.message || 'Không giữ được ghế/đặt vé');
     } finally {
       setLoading(false);
     }

@@ -13,11 +13,21 @@ public class BookingRepository(AppDbContext db) : Repository<Booking>(db), IBook
             $"UPDATE ShowtimeSeats SET Status='Available', LockedUntil=NULL WHERE ShowtimeId={{0}} AND Status='Locked' AND LockedUntil<{{1}}",
             [showtimeId, now], ct);
 
-        var seatIds = showtimeSeatIds.ToArray();
+        var seatIds = showtimeSeatIds.Distinct().ToArray();
         var seats = await _db.ShowtimeSeats
-            .Where(x => x.ShowtimeId == showtimeId && (seatIds.Contains(x.Id) || seatIds.Contains(x.SeatId)))
-            .ToListAsync(ct); 
-        if (seats.Count == 0 || seats.Any(s => s.Status != "Locked")) throw new InvalidOperationException("Seats not locked");
+             .Where(x => x.ShowtimeId == showtimeId && seatIds.Contains(x.Id))
+            .ToListAsync(ct);
+        if (seats.Count != seatIds.Length)
+            throw new InvalidOperationException("Một hoặc nhiều ghế đã không còn khả dụng.");
+        if (seats.Any(s => s.Status != "Locked"))
+            throw new InvalidOperationException("Ghế đã được giữ hoặc phiên giữ ghế đã hết hạn.");
+
+        var alreadyBookedSeatIds = await _db.BookingItems
+            .Where(x => seatIds.Contains(x.ShowtimeSeatId))
+            .Select(x => x.ShowtimeSeatId)
+            .ToArrayAsync(ct);
+        if (alreadyBookedSeatIds.Length > 0)
+            throw new InvalidOperationException("Một hoặc nhiều ghế đã được đặt trước đó.");
 
         var amount = seats.Sum(s => s.Price);
         using var tx = await _db.Database.BeginTransactionAsync(ct);
@@ -26,11 +36,25 @@ public class BookingRepository(AppDbContext db) : Repository<Booking>(db), IBook
             foreach (var s in seats) { s.Status = "Booked"; s.LockedUntil = null; }
 
             var orderCode = $"ORD{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}{Random.Shared.Next(100, 999)}";
-            var bk = new Booking { UserId = userId, ShowtimeId = showtimeId, Status = "Pending", OrderCode = orderCode, Amount = amount };
+            var bk = new Booking
+            {
+                UserId = userId,
+                ShowtimeId = showtimeId,
+                Status = "Pending",
+                OrderCode = orderCode,
+                Amount = amount
+            };
+
             _db.Bookings.Add(bk);
             await _db.SaveChangesAsync(ct);
 
-            _db.BookingItems.AddRange(seats.Select(s => new BookingItem { BookingId = bk.Id, ShowtimeSeatId = s.Id, Price = s.Price }));
+            var items = seats.Select(seat => new BookingItem
+            {
+                BookingId = bk.Id,
+                ShowtimeSeatId = seat.Id,
+                Price = seat.Price
+            });
+            await _db.BookingItems.AddRangeAsync(items, ct);
             await _db.SaveChangesAsync(ct);
 
             await tx.CommitAsync(ct);

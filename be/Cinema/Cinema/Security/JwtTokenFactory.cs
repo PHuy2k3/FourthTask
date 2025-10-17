@@ -34,6 +34,7 @@ namespace Cinema.Security
             var claims = new[]
             {
                 new Claim("uid", userId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim("name", string.IsNullOrWhiteSpace(fullName) ? email : fullName),
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim(ClaimTypes.Role, role)

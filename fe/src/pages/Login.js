@@ -50,7 +50,14 @@ export default function Login() {
         )}
 
         <span className="p-float-label">
-          <Password id="pwd" value={pwd} onChange={e => setPwd(e.target.value)} toggleMask feedback={false} className="w-full" />
+          <Password
+            id="pwd"
+            value={pwd}
+            onChange={(e) => setPwd(e.target.value)}
+            toggleMask
+            feedback={false}
+            className="w-full"
+          />          
           <label htmlFor="pwd">Mật khẩu</label>
         </span>
 

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cinema.Biz.Irepo;
@@ -50,20 +52,46 @@ public class BookingsController : ControllerBase
             return ValidationProblem(ModelState);
 
         var userIdValue = userId.Value;
-        var userExists = await _db.Users.AnyAsync(u => u.Id == userIdValue, ct); 
+        var userExists = await _db.Users.AnyAsync(u => u.Id == userIdValue, ct);
         if (!userExists)
             return BadRequest($"UserId {userIdValue} does not exist");
 
-        var booking = await _bookings.CreateFromLockedSeatsAsync(userIdValue, req.ShowtimeId, req.ShowtimeSeatIds, ct);
-        return Ok(new
+        var showtimeExists = await _db.Showtimes.AnyAsync(s => s.Id == req.ShowtimeId, ct);
+        if (!showtimeExists)
+            return BadRequest($"Showtime {req.ShowtimeId} does not exist");
+
+        try
         {
-            booking.Id,
-            booking.OrderCode,
-            booking.Status,
-            booking.Amount,
-            booking.ShowtimeId,
-            booking.UserId
-        });
+            var booking = await _bookings.CreateFromLockedSeatsAsync(userIdValue, req.ShowtimeId, req.ShowtimeSeatIds, ct);
+            return Ok(new
+            {
+                booking.Id,
+                booking.OrderCode,
+                booking.Status,
+                booking.Amount,
+                booking.ShowtimeId,
+                booking.UserId
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(ex.Message);
+        }
+        catch (DbUpdateException)
+        {
+            var seats = await _db.ShowtimeSeats
+                .Where(s => s.ShowtimeId == req.ShowtimeId && req.ShowtimeSeatIds.Contains(s.Id))
+                .Select(s => new { s.Id, s.Status })
+                .ToListAsync(ct);
+
+            if (seats.Any(s => s.Status == "Booked"))
+                return Conflict("Một hoặc nhiều ghế đã được đặt trước đó.");
+
+            if (seats.Any(s => s.Status != "Locked"))
+                return Conflict("Ghế đã được giữ hoặc phiên giữ ghế đã hết hạn.");
+
+            return Conflict("Không thể hoàn tất đặt vé vì dữ liệu không hợp lệ hoặc ghế đã được giữ.");
+        }
     }
 
     // GET /api/bookings/me?userId=123  (tạm thời)

@@ -238,8 +238,7 @@
               "RelativeToolTip": "Cinema.Biz\\Repository\\BookingRepository.cs",
               "ViewState": "AgIAABYAAAAAAAAAAADwvzIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T08:55:51.37Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T08:55:51.37Z"
             },
             {
               "$type": "Document",
@@ -251,8 +250,7 @@
               "RelativeToolTip": "Cinema.Data.Model\\Booking.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:11:48.145Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:11:48.145Z"
             },
             {
               "$type": "Document",
@@ -264,8 +262,7 @@
               "RelativeToolTip": "Cinema.Data.Model\\BookingItem.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:12:03.474Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:12:03.474Z"
             },
             {
               "$type": "Document",
@@ -277,8 +274,7 @@
               "RelativeToolTip": "Cinema.Data.Model\\Showtime.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:06:47.043Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:06:47.043Z"
             },
             {
               "$type": "Document",
@@ -290,8 +286,7 @@
               "RelativeToolTip": "Cinema.Data.Model\\ShowtimeSeat.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:08:12.207Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:08:12.207Z"
             },
             {
               "$type": "Document",
@@ -303,8 +298,7 @@
               "RelativeToolTip": "Cinema.Data.Model\\Seat.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:04:40.731Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:04:40.731Z"
             },
             {
               "$type": "Document",
@@ -316,8 +310,7 @@
               "RelativeToolTip": "Cinema.Biz\\IRepository\\IBookingRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T08:15:57.852Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T08:15:57.852Z"
             },
             {
               "$type": "Document",
@@ -327,7 +320,7 @@
               "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\BookingsController.cs",
               "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\BookingsController.cs",
               "RelativeToolTip": "Cinema.Api\\Controllers\\BookingsController.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAowB4AAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAowCAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-09T03:19:27.948Z",
               "EditorCaption": ""
@@ -342,8 +335,7 @@
               "RelativeToolTip": "Cinema.Data\\AppDbContext.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAAwBMAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:36:20.02Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:36:20.02Z"
             },
             {
               "$type": "Document",
@@ -355,8 +347,7 @@
               "RelativeToolTip": "Cinema.Biz.Model\\BookingDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAABTAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:39:41.239Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:39:41.239Z"
             },
             {
               "$type": "Document",
@@ -368,8 +359,7 @@
               "RelativeToolTip": "Cinema.Api\\Program.cs",
               "ViewState": "AgIAAGgAAAAAAAAAAADwv3sAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:55:42.185Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:55:42.185Z"
             },
             {
               "$type": "Document",
@@ -381,8 +371,7 @@
               "RelativeToolTip": "Cinema.Biz\\Repository\\ShowtimeRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGkAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T08:54:24.127Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T08:54:24.127Z"
             },
             {
               "$type": "Document",

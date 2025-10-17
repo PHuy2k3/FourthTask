@@ -87,9 +87,17 @@ function Shell({ children }) {
   );
 
   return (
-    <div className="p-3">
-      <Menubar model={items} end={end} />
-      <div className="mt-3">{children}</div>
+    <div className="app-shell">
+      <header className="app-shell__navbar">
+        <div className="app-shell__navbar-inner">
+          <Menubar model={items} end={end} className="app-shell__menu" />
+        </div>
+      </header>
+      <main className="app-shell__content">
+        <div className="app-shell__panel">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }
