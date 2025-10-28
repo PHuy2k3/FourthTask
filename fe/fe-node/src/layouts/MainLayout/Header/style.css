@@ -1,0 +1,32 @@
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    width: 100%;
+    background-color: #091422bd;
+    z-index: 9999;
+    color: aliceblue;
+    padding: 10px 100px;
+    
+}
+.btn-up{
+    border: 1px dotted aliceblue;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.menu-item{
+    cursor: pointer;
+    text-transform: uppercase;
+}
+.menu-item span{
+    padding: 0 10px;
+}
+.flexAl{
+    display: flex;
+    align-items: center;
+}
+.flexAl li{
+    padding: 0 10px;
+}

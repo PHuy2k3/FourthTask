@@ -1,0 +1,21 @@
+
+.ftco-section{
+    background-image: url("./bgAuth.jpg");
+    min-height: 100vh;
+}
+.ftco-section img{
+    width: 80%;
+    margin-bottom: 20px;
+}
+.ftco-section .img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.wrap {
+margin-top: 300px;
+}
+.dk{
+    text-align: end;
+    margin-top: 5px;
+}

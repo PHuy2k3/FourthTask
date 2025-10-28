@@ -1,0 +1,23 @@
+.flexCent{
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    justify-content: space-between;
+    width: 70%;
+}
+.wrapperFlex{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding-top: 150px;
+}
+.flexCent .items{
+    margin: 0 40px;
+}
+.flexCent .items img{
+    width: 400px;
+}
+
+.flexCent p{
+    color: white !important;
+}
