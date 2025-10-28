@@ -22,8 +22,10 @@ public class BookingRepository(AppDbContext db) : Repository<Booking>(db), IBook
         if (seats.Any(s => s.Status != "Locked"))
             throw new InvalidOperationException("Ghế đã được giữ hoặc phiên giữ ghế đã hết hạn.");
 
+        var blockingStatuses = new[] { "Pending", "Paid" };
         var alreadyBookedSeatIds = await _db.BookingItems
-            .Where(x => seatIds.Contains(x.ShowtimeSeatId))
+            .Where(x => seatIds.Contains(x.ShowtimeSeatId)
+                        && blockingStatuses.Contains(x.Booking.Status))
             .Select(x => x.ShowtimeSeatId)
             .ToArrayAsync(ct);
         if (alreadyBookedSeatIds.Length > 0)

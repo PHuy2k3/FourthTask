@@ -27,6 +27,11 @@ export default function AdminHome() {
           icon="pi pi-calendar"
           onClick={() => nav('/admin/showtimes')}
         />
+        <Button
+          label="Duyệt vé người dùng"
+          icon="pi pi-ticket"
+          onClick={() => nav('/admin/bookings')}
+        />
       </div>
     </Card>
   );
