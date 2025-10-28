@@ -1,0 +1,153 @@
+extends layout
+
+block content
+  .jumbotron
+    h1 Thanh toán qua VietQR
+    p.lead Tạo đơn thanh toán và hiển thị mã QR để khách hàng quét bằng ứng dụng ngân hàng.
+  .row
+    .col-md-6
+      form#vietqr-form
+        .form-group
+          label(for='amount') Số tiền (VND)
+          input#amount.form-control(type='number', min='0', step='1000', required, value='50000')
+        .form-group
+          label(for='maLichChieu') Mã lịch chiếu
+          input#maLichChieu.form-control(type='text', placeholder='VD: LICH001')
+        .form-group
+          label(for='taiKhoanNguoiDung') Tài khoản người dùng
+          input#taiKhoanNguoiDung.form-control(type='text', placeholder='VD: khachhang01')
+        .form-group
+          label(for='danhSachVe') Danh sách vé (JSON)
+          textarea#danhSachVe.form-control(rows='3', placeholder='["A1","A2"]')
+        button.btn.btn-primary(type='submit') Tạo mã QR
+      p.help-block.mt-3.text-muted
+        | Webhook có thể được cấu hình tại đường dẫn 
+        code POST /api/payment/vietqr/webhook
+        |  (xem tài liệu cấu hình để biết thêm chi tiết).
+    .col-md-6
+      #qr-section.hidden
+        h3 Thông tin mã QR
+        p
+          | Mã đơn hàng: 
+          strong#order-id
+        img#qr-image.img-responsive(style='max-width: 320px;')
+        p#qr-fallback.text-muted
+        pre#qr-raw
+        hr
+        h4 Trạng thái giao dịch
+        p
+          | Trạng thái hiện tại: 
+          strong#payment-status.text-warning Chưa thanh toán
+        p#payment-updated.small.text-muted
+        button#manual-confirm.btn.btn-success.mt-2(type='button') Xác nhận đã thanh toán (demo)
+
+  script.
+    (function() {
+      const form = document.getElementById('vietqr-form');
+      const qrSection = document.getElementById('qr-section');
+      const orderIdEl = document.getElementById('order-id');
+      const qrImage = document.getElementById('qr-image');
+      const qrFallback = document.getElementById('qr-fallback');
+      const qrRaw = document.getElementById('qr-raw');
+      const statusEl = document.getElementById('payment-status');
+      const updatedEl = document.getElementById('payment-updated');
+      const manualConfirmBtn = document.getElementById('manual-confirm');
+      let pollInterval = null;
+      let currentOrderId = null;
+
+      function setStatus(text, statusClass) {
+        statusEl.textContent = text;
+        statusEl.className = statusClass;
+        const now = new Date();
+        updatedEl.textContent = `Cập nhật lúc ${now.toLocaleTimeString()}`;
+      }
+
+      function stopPolling() {
+        if (pollInterval) {
+          clearInterval(pollInterval);
+          pollInterval = null;
+        }
+      }
+
+      async function pollStatus() {
+        if (!currentOrderId) return;
+        try {
+          const resp = await fetch(`/api/payment/vietqr/status/${currentOrderId}`);
+          if (!resp.ok) throw new Error('Không lấy được trạng thái');
+          const data = await resp.json();
+          setStatus(data.status || 'unknown', data.status === 'paid' ? 'text-success' : 'text-warning');
+          if (data.status === 'paid') {
+            stopPolling();
+          }
+        } catch (error) {
+          console.error(error);
+          stopPolling();
+          setStatus('Không thể cập nhật trạng thái', 'text-danger');
+        }
+      }
+
+      form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        stopPolling();
+        setStatus('Đang tạo mã QR...', 'text-info');
+
+        const payload = {
+          amount: Number(document.getElementById('amount').value) || 0,
+          maLichChieu: document.getElementById('maLichChieu').value,
+          taiKhoanNguoiDung: document.getElementById('taiKhoanNguoiDung').value,
+          danhSachVe: document.getElementById('danhSachVe').value,
+        };
+
+        try {
+          const resp = await fetch('/api/payment/vietqr/create', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (!resp.ok) {
+            const errorPayload = await resp.json().catch(() => ({}));
+            throw new Error(errorPayload.message || 'Không thể tạo mã QR');
+          }
+
+          const data = await resp.json();
+          currentOrderId = data.orderId;
+          orderIdEl.textContent = data.orderId;
+          const qrData = data.qrData || {};
+          const qrImageUrl = qrData.qrDataURL || qrData.qrDataUrl || qrData.qrImage || qrData.url || null;
+          if (qrImageUrl) {
+            qrImage.src = qrImageUrl;
+            qrImage.classList.remove('hidden');
+            qrFallback.textContent = '';
+          } else {
+            qrImage.src = '';
+            qrImage.classList.add('hidden');
+            qrFallback.textContent = 'API không trả về hình ảnh, vui lòng dùng dữ liệu JSON bên dưới để tạo QR.';
+          }
+          qrRaw.textContent = JSON.stringify(qrData, null, 2);
+          qrSection.classList.remove('hidden');
+          setStatus('Chưa thanh toán', 'text-warning');
+          pollInterval = setInterval(pollStatus, 5000);
+        } catch (error) {
+          console.error(error);
+          setStatus(error.message, 'text-danger');
+        }
+      });
+
+      manualConfirmBtn.addEventListener('click', async function() {
+        if (!currentOrderId) return;
+        try {
+          const resp = await fetch('/api/payment/vietqr/manual-confirm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: currentOrderId }),
+          });
+          if (!resp.ok) throw new Error('Không thể xác nhận đơn hàng');
+          await pollStatus();
+        } catch (error) {
+          console.error(error);
+        }
+      });
+    })();

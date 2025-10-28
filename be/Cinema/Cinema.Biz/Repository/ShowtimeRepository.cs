@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cinema.Biz.Irepo;
 using Cinema.Data;
+using Cinema.Data.Model.Showtimes;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Biz.Repo
@@ -62,39 +63,68 @@ namespace Cinema.Biz.Repo
 
             return data;
         }
-
-
         public async Task<bool> LockSeatsAsync(int showtimeId, IReadOnlyCollection<int> seatIds, int lockSeconds, CancellationToken ct)
         {
             if (seatIds == null || seatIds.Count == 0) return false;
+
+            var distinctSeatIds = seatIds.Distinct().ToArray();
+            if (distinctSeatIds.Length == 0) 
+                return false;
+
             var now = DateTime.UtcNow;
             var until = now.AddSeconds(Math.Max(30, lockSeconds));
 
-            var seatIdsArray = seatIds.ToArray();
             var seats = await _db.ShowtimeSeats
-                .Where(ss => ss.ShowtimeId == showtimeId && (seatIdsArray.Contains(ss.SeatId) || seatIdsArray.Contains(ss.Id)))
+                .Where(ss => ss.ShowtimeId == showtimeId &&
+                             (distinctSeatIds.Contains(ss.Id) || distinctSeatIds.Contains(ss.SeatId)))
                 .ToListAsync(ct);
 
-            int lockedCount = 0;
+            if (seats.Count == 0)
+                return false;
+
+            var seatMatches = new Dictionary<int, ShowtimeSeat>();
             foreach (var ss in seats)
             {
-                var canLock =
-                    ss.Status == "Available" ||
-                    (ss.Status == "Locked" && (!ss.LockedUntil.HasValue || ss.LockedUntil.Value <= now));
-
-                if (canLock)
+                if (distinctSeatIds.Contains(ss.Id))
                 {
-                    ss.Status = "Locked";
-                    ss.LockedUntil = until;
-                    lockedCount++;
+                    if (seatMatches.TryGetValue(ss.Id, out var existing) && existing != ss)
+                        return false; // ambiguous identifier
+
+                    seatMatches[ss.Id] = ss;
+                }
+
+                if (distinctSeatIds.Contains(ss.SeatId))
+                {
+                    if (seatMatches.TryGetValue(ss.SeatId, out var existing) && existing != ss)
+                        return false; // ambiguous identifier
+
+                    seatMatches[ss.SeatId] = ss;
                 }
             }
 
-            if (lockedCount == 0) return false;
+            if (seatMatches.Count != distinctSeatIds.Length)
+                return false;
+
+            var seatsToLock = seatMatches.Values.Distinct().ToList();
+            if (seatsToLock.Count != seatMatches.Count)
+                return false; // two identifiers pointing to the same seat
+
+            if (seatsToLock.Any(ss =>
+                    ss.Status == "Booked" ||
+                    (ss.Status == "Locked" && ss.LockedUntil.HasValue && ss.LockedUntil.Value > now)))
+            {
+                return false;
+            }
+
+            foreach (var ss in seatsToLock)
+            {
+                ss.Status = "Locked";
+                ss.LockedUntil = until;
+            }
+
             await _db.SaveChangesAsync(ct);
             return true;
         }
-
         private static TimeZoneInfo ResolveSeAsiaTimeZone()
         {
             const string windowsId = "SE Asia Standard Time";

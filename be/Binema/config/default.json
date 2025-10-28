@@ -1,0 +1,27 @@
+{
+  "vnp_TmnCode":"2DQGKKDA",
+  "vnp_HashSecret":"UMTCVNGYSCWSWVEJCADPUEECDUCVHVNU",
+  "vnp_Url":"https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
+  "vnp_Api":"https://sandbox.vnpayment.vn/merchant_webapi/api/transaction",
+  "vnp_ReturnUrl": "http://localhost:3000/datve/",
+
+  "vietqr": {
+    "bankBin": "970415",
+    "accountNo": "100875072657",           
+    "accountName": "NGUYEN PHAN HUY",
+    "template": "compact",
+    "endpoint": "https://api.vietqr.io/v2/generate"     
+  },
+  "email": {
+    "from": "no-reply@example.com",
+    "transport": {
+      "host": "",
+      "port": 587,
+      "secure": false,
+      "auth": {
+        "user": "",
+        "pass": ""
+      }
+    }
+  }
+}

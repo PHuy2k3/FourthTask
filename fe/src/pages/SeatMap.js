@@ -68,7 +68,8 @@ export default function SeatMap() {
       alert(`Đặt vé thành công: ${booking.orderCode} - Tổng ${booking.amount}`);
       nav('/showtimes');
     } catch (e) {
-      alert(e.response?.data?.message ?? 'Không giữ được ghế/đặt vé'); const payload = e.response?.data;
+      alert(e.response?.data?.message ?? 'Không giữ được ghế/đặt vé'); 
+      const payload = e.response?.data;
       const validation = payload?.errors
         ? Object.values(payload.errors).flat().join('\n')
         : null;
