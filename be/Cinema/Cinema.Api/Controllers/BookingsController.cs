@@ -1,219 +1,132 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Data;
 using Cinema.Biz.Irepo;
 using Cinema.Data;
+using Cinema.Data.Model.Bookings;
+using Microsoft.EntityFrameworkCore;
 
-namespace Cinema.Api.Controllers;
+namespace Cinema.Biz.Repo;
 
-[ApiController]
-[Route("api/bookings")]
-public class BookingsController : ControllerBase
+public class BookingRepository(AppDbContext _db) : Repository<Booking>(_db), IBookingRepository
 {
-    private readonly IBookingRepository _bookings;
-    private readonly AppDbContext _db;
-
-    public BookingsController(IBookingRepository bookings, AppDbContext db)
-    {
-        _bookings = bookings; _db = db;
-    }
-
-    public record CreateBookingReq(
-        [Required, Range(1, int.MaxValue)] int ShowtimeId,
-        [Required, MinLength(1)] IReadOnlyCollection<int> ShowtimeSeatIds,
-        int? UserId);
-    // POST /api/bookings
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateBookingReq req, CancellationToken ct)
-    {
-        var userId = req.UserId;
-        if (userId is null)
-        {
-            var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(claim, out var parsed) || parsed <= 0)
-            {
-                ModelState.AddModelError(nameof(CreateBookingReq.UserId), "UserId must be greater than zero");
-            }
-            else
-            {
-                userId = parsed;
-            }
-        }
-        else if (userId <= 0)
-        {
-            ModelState.AddModelError(nameof(CreateBookingReq.UserId), "UserId must be greater than zero");
-        }
-
-        if (!ModelState.IsValid)
-            return ValidationProblem(ModelState);
-
-        var seatIds = req.ShowtimeSeatIds.Where(id => id > 0).Distinct().ToArray();
-        if (seatIds.Length == 0)
-        {
-            ModelState.AddModelError(nameof(CreateBookingReq.ShowtimeSeatIds), "Cần ít nhất một ghế hợp lệ.");
-        }
-
-        if (!ModelState.IsValid)
-            return ValidationProblem(ModelState);
-
-        var userIdValue = userId.Value;
-        var userExists = await _db.Users.AnyAsync(u => u.Id == userIdValue, ct);
-        if (!userExists)
-            return BadRequest($"UserId {userIdValue} does not exist");
-
-        var showtimeExists = await _db.Showtimes.AnyAsync(s => s.Id == req.ShowtimeId, ct);
-        if (!showtimeExists)
-            return BadRequest($"Showtime {req.ShowtimeId} does not exist");
-
-        try
-        {
-            var booking = await _bookings.CreateFromLockedSeatsAsync(userIdValue, req.ShowtimeId, seatIds, ct);
-            return Ok(new
-            {
-                booking.Id,
-                booking.OrderCode,
-                booking.Status,
-                booking.Amount,
-                booking.ShowtimeId,
-                booking.UserId,
-                Seats = seatIds
-            });
-        }
-        catch (InvalidOperationException ex)
-        {
-            return await BuildSeatConflictResponse(req.ShowtimeId, seatIds, ex.Message, ct);
-        }
-        catch (DbUpdateException)
-        {
-            return await BuildSeatConflictResponse(
-                req.ShowtimeId,
-                seatIds,
-                "Không thể hoàn tất đặt vé vì dữ liệu không hợp lệ hoặc ghế đã được giữ.",
-                ct);
-        }
-    }
-
-    // GET /api/bookings/me?userId=123  (tạm thời)
-    [HttpGet("me")]
-    public async Task<IActionResult> MyBookings([FromQuery] int userId, CancellationToken ct)
-    {
-        if (userId <= 0) return BadRequest("userId required");
-        var data = await _db.Bookings
-            .Where(b => b.UserId == userId)
-            .OrderByDescending(b => b.Id)
-            .Select(b => new {
-                b.Id,
-                b.OrderCode,
-                b.Status,
-                b.Amount,
-                b.CreatedAt,
-                Movie = b.Showtime!.Movie!.Title,
-                StartAt = b.Showtime!.StartAt,
-                Room = b.Showtime!.Room!.Name,
-                Cinema = b.Showtime!.Room!.Cinema!.Name
-            })
-            .ToListAsync(ct);
-
-        return Ok(data);
-    }
-
-    private async Task<IActionResult> BuildSeatConflictResponse(
+    public async Task<Booking> CreateFromLockedSeatsAsync(
+        int userId,
         int showtimeId,
-        IReadOnlyCollection<int> seatIds,
-        string fallbackMessage,
+        IReadOnlyCollection<int> showtimeSeatIds,
         CancellationToken ct)
     {
-        var seatDetails = await _db.ShowtimeSeats
-            .Where(s => s.ShowtimeId == showtimeId && seatIds.Contains(s.Id))
-            .Select(s => new
-            {
-                s.Id,
-                s.SeatId,
-                SeatCode = s.Seat!.Code,
-                s.Status
-            })
-            .ToListAsync(ct);
+        var seatIds = showtimeSeatIds.Distinct().ToArray();
+        if (seatIds.Length == 0)
+            throw new InvalidOperationException("Không có ghế hợp lệ để đặt.");
 
-        var detailsById = seatDetails.ToDictionary(s => s.Id);
+        await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.Serializable, ct);
+        try
+        {
+            var now = DateTime.UtcNow;
 
-        var reasons = seatIds
-            .Select(id =>
+            // 1) Dọn lock hết hạn
+            await _db.Database.ExecuteSqlRawAsync(
+                """
+                UPDATE ss
+                SET ss.Status='Available', ss.LockedUntil=NULL
+                FROM ShowtimeSeats ss
+                WHERE ss.ShowtimeId={0} AND ss.Status='Locked' AND ss.LockedUntil<{1}
+                """,
+                [showtimeId, now], ct);
+
+            // 2) Row-lock các ghế mục tiêu (SQL Server hints)
+            var sql = $@"
+                SELECT *
+                FROM ShowtimeSeats WITH (UPDLOCK, ROWLOCK, HOLDLOCK)
+                WHERE ShowtimeId = {showtimeId} AND Id IN ({string.Join(",", seatIds)})
+            ";
+
+            var seats = await _db.ShowtimeSeats
+                .FromSqlRaw(sql)
+                .OrderBy(x => x.Id)
+                .ToListAsync(ct);
+
+            if (seats.Count != seatIds.Length)
+                throw new InvalidOperationException("Một hoặc nhiều ghế không tồn tại trong suất chiếu.");
+
+            // 3) Chỉ cho phép ghế Available (vì chưa có LockedByUserId)
+            var invalid = seats.FirstOrDefault(s =>
+                s.Status == "Booked"
+                || (s.Status == "Locked" && s.LockedUntil.HasValue && s.LockedUntil.Value >= now));
+
+            if (invalid != null)
+                throw new InvalidOperationException("Ghế đã được giữ hoặc không khả dụng.");
+
+            // 4) Đặt trạng thái Booked
+            foreach (var s in seats)
             {
-                if (detailsById.TryGetValue(id, out var seat))
+                s.Status = "Booked";
+                s.LockedUntil = null;
+            }
+
+            var amount = seats.Sum(s => s.Price);
+
+            // 🔹 Sinh mã order đơn giản, không cần Ulid
+            var orderCode = $"ORD{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}{Random.Shared.Next(100, 999)}";
+
+            var booking = new Booking
+            {
+                UserId = userId,
+                ShowtimeId = showtimeId,
+                Status = "Pending",
+                OrderCode = orderCode,
+                Amount = amount
+            };
+
+            _db.Bookings.Add(booking);
+            foreach (var s in seats)
+            {
+                _db.BookingItems.Add(new BookingItem
                 {
-                    var (reasonCode, reasonMessage) = MapSeatStatusToReason(seat.Status);
-                    return new SeatConflictReason(
-                        id,
-                        seat.SeatId,
-                        seat.SeatCode,
-                        seat.Status,
-                        reasonCode,
-                        reasonMessage);
-                }
+                    Booking = booking,
+                    ShowtimeSeatId = s.Id,
+                    Price = s.Price
+                });
+            }
 
-                return new SeatConflictReason(
-                    id,
-                    null,
-                    null,
-                    "Missing",
-                    "missing",
-                    "Ghế không tồn tại trong suất chiếu.");
-            })
-            .ToList();
-
-        var message = ResolveConflictMessage(reasons, fallbackMessage);
-
-        return Conflict(new
+            await _db.SaveChangesAsync(ct);
+            await tx.CommitAsync(ct);
+            return booking;
+        }
+        catch
         {
-            message,
-            reasons = reasons.Select(r => new
+            await tx.RollbackAsync(ct);
+            throw;
+        }
+    }
+
+    public async Task<bool> MarkPaidAsync(string orderCode, CancellationToken ct)
+    {
+        await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, ct);
+        try
+        {
+            var bk = await _db.Bookings.FirstOrDefaultAsync(x => x.OrderCode == orderCode, ct);
+            if (bk is null) return false;
+
+            if (bk.Status == "Paid")
             {
-                showtimeSeatId = r.ShowtimeSeatId,
-                seatId = r.SeatId,
-                seatCode = r.SeatCode,
-                status = r.Status,
-                reasonCode = r.ReasonCode,
-                reasonMessage = r.ReasonMessage
-            })
-        });
-    }
+                await tx.CommitAsync(ct);
+                return true;
+            }
+            if (bk.Status != "Pending")
+            {
+                await tx.RollbackAsync(ct);
+                return false;
+            }
 
-    private static (string ReasonCode, string ReasonMessage) MapSeatStatusToReason(string status)
-    {
-        return status switch
+            bk.Status = "Paid";
+            await _db.SaveChangesAsync(ct);
+            await tx.CommitAsync(ct);
+            return true;
+        }
+        catch
         {
-            "Booked" => ("booked", "Ghế đã được đặt trước đó."),
-            "Locked" => ("locked", "Ghế đang được giữ bởi người dùng khác."),
-            "Available" => ("available", "Ghế hiện đang khả dụng. Vui lòng thử lại thao tác đặt."),
-            _ => ("unknown", "Trạng thái ghế không xác định."),
-        };
+            await tx.RollbackAsync(ct);
+            throw;
+        }
     }
-
-    private static string ResolveConflictMessage(
-        IReadOnlyCollection<SeatConflictReason> reasons,
-        string fallbackMessage)
-    {
-        if (reasons.Any(r => r.ReasonCode == "booked"))
-            return "Một hoặc nhiều ghế đã được đặt trước đó.";
-
-        if (reasons.Any(r => r.ReasonCode == "locked"))
-            return "Ghế đã được giữ hoặc phiên giữ ghế đã hết hạn.";
-
-        if (reasons.Any(r => r.ReasonCode == "missing"))
-            return "Một hoặc nhiều ghế không tồn tại trong suất chiếu.";
-
-        return fallbackMessage;
-    }
-
-    private sealed record SeatConflictReason(
-        int ShowtimeSeatId,
-        int? SeatId,
-        string? SeatCode,
-        string Status,
-        string ReasonCode,
-        string ReasonMessage);
 }

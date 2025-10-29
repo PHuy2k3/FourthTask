@@ -86,6 +86,7 @@ b.Services.AddSwaggerGen(c =>
 b.Services.AddCors();
 
 var app = b.Build();
+app.UseRouting();
 
 // CORS phải chạy trước auth nếu bạn cần OPTIONS preflight thoáng
 app.UseCors(p => p
@@ -105,8 +106,10 @@ app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
-
+app.UseEndpoints(e =>
+{
+    e.MapControllers();
+});
 // 8) Seed Admin 1 lần (dev) + đảm bảo DB sẵn
 using (var scope = app.Services.CreateScope())
 {

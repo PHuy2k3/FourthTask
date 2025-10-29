@@ -13,7 +13,8 @@
           "Cinema.Biz.Model": "1.0.0",
           "Cinema.Data": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.0",
-          "Swashbuckle.AspNetCore": "6.6.2"
+          "Swashbuckle.AspNetCore": "6.6.2",
+          "Ulid": "1.4.1"
         },
         "runtime": {
           "Cinema.Api.dll": {}
@@ -558,6 +559,14 @@
           }
         }
       },
+      "Ulid/1.4.1": {
+        "runtime": {
+          "lib/net8.0/Ulid.dll": {
+            "assemblyVersion": "1.4.1.0",
+            "fileVersion": "1.4.1.0"
+          }
+        }
+      },
       "Cinema/1.0.0": {
         "dependencies": {
           "Microsoft.IdentityModel.Tokens": "8.0.1",
@@ -1021,6 +1030,13 @@
       "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
       "path": "system.windows.extensions/6.0.0",
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "Ulid/1.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-V6crLJ8a29raWeNwxYGfH9RTKA3H0nR0D9LAGzN3KtEsbiiaWkUjDor6OT5Oz7pxCK+NaY2hu2FLoYEOa8oCkA==",
+      "path": "ulid/1.4.1",
+      "hashPath": "ulid.1.4.1.nupkg.sha512"
     },
     "Cinema/1.0.0": {
       "type": "project",

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Biz.Repo;
 
-public class BookingRepository(AppDbContext db) : Repository<Booking>(db), IBookingRepository
+public class BookingRepository(AppDbContext _db) : Repository<Booking>(_db), IBookingRepository
 {
     public async Task<Booking> CreateFromLockedSeatsAsync(
         int userId,
@@ -23,53 +23,51 @@ public class BookingRepository(AppDbContext db) : Repository<Booking>(db), IBook
         {
             var now = DateTime.UtcNow;
 
-            const string releaseExpiredLocksSql =
-                "UPDATE ShowtimeSeats " +
-                "SET Status='Available', LockedUntil=NULL " +
-                "WHERE ShowtimeId={0} AND Status='Locked' AND LockedUntil<{1}";
+            // 1) Dọn lock hết hạn
+            await _db.Database.ExecuteSqlRawAsync(
+                """
+                UPDATE ss
+                SET ss.Status='Available', ss.LockedUntil=NULL
+                FROM ShowtimeSeats ss
+                WHERE ss.ShowtimeId={0} AND ss.Status='Locked' AND ss.LockedUntil<{1}
+                """,
+                [showtimeId, now], ct);
 
-            await _db.Database.ExecuteSqlRawAsync(releaseExpiredLocksSql, [showtimeId, now], ct);
+            // 2) Row-lock các ghế mục tiêu (SQL Server hints)
+            var sql = $@"
+                SELECT *
+                FROM ShowtimeSeats WITH (UPDLOCK, ROWLOCK, HOLDLOCK)
+                WHERE ShowtimeId = {showtimeId} AND Id IN ({string.Join(",", seatIds)})
+            ";
 
             var seats = await _db.ShowtimeSeats
-                .Where(x => x.ShowtimeId == showtimeId && seatIds.Contains(x.Id))
+                .FromSqlRaw(sql)
                 .OrderBy(x => x.Id)
                 .ToListAsync(ct);
 
             if (seats.Count != seatIds.Length)
-                throw new InvalidOperationException("Một hoặc nhiều ghế đã không còn khả dụng.");
+                throw new InvalidOperationException("Một hoặc nhiều ghế không tồn tại trong suất chiếu.");
 
-            foreach (var seat in seats)
+            // 3) Chỉ cho phép ghế Available (vì chưa có LockedByUserId)
+            var invalid = seats.FirstOrDefault(s =>
+                s.Status == "Booked"
+                || (s.Status == "Locked" && s.LockedUntil.HasValue && s.LockedUntil.Value >= now));
+
+            if (invalid != null)
+                throw new InvalidOperationException("Ghế đã được giữ hoặc không khả dụng.");
+
+            // 4) Đặt trạng thái Booked
+            foreach (var s in seats)
             {
-                if (seat.Status == "Booked")
-                    throw new InvalidOperationException("Một hoặc nhiều ghế đã được đặt trước đó.");
-
-                if (seat.Status == "Locked" && seat.LockedUntil.HasValue && seat.LockedUntil.Value < now)
-                {
-                    seat.Status = "Available";
-                    seat.LockedUntil = null;
-                }
-            }
-
-            if (seats.Any(s => s.Status != "Available" && s.Status != "Locked"))
-                throw new InvalidOperationException("Ghế đã được giữ hoặc phiên giữ ghế đã hết hạn.");
-
-            var blockingStatuses = new[] { "Pending", "Paid" };
-            var alreadyBookedSeatIds = await _db.BookingItems
-                .Where(x => seatIds.Contains(x.ShowtimeSeatId) && blockingStatuses.Contains(x.Booking.Status))
-                .Select(x => x.ShowtimeSeatId)
-                .ToArrayAsync(ct);
-
-            if (alreadyBookedSeatIds.Length > 0)
-                throw new InvalidOperationException("Một hoặc nhiều ghế đã được đặt trước đó.");
-
-            foreach (var seat in seats)
-            {
-                seat.Status = "Booked";
-                seat.LockedUntil = null;
+                s.Status = "Booked";
+                s.LockedUntil = null;
             }
 
             var amount = seats.Sum(s => s.Price);
+
+            // 🔹 Sinh mã order đơn giản, không cần Ulid
             var orderCode = $"ORD{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}{Random.Shared.Next(100, 999)}";
+
             var booking = new Booking
             {
                 UserId = userId,
@@ -80,14 +78,13 @@ public class BookingRepository(AppDbContext db) : Repository<Booking>(db), IBook
             };
 
             _db.Bookings.Add(booking);
-
-            foreach (var seat in seats)
+            foreach (var s in seats)
             {
                 _db.BookingItems.Add(new BookingItem
                 {
                     Booking = booking,
-                    ShowtimeSeatId = seat.Id,
-                    Price = seat.Price
+                    ShowtimeSeatId = s.Id,
+                    Price = s.Price
                 });
             }
 
@@ -101,14 +98,35 @@ public class BookingRepository(AppDbContext db) : Repository<Booking>(db), IBook
             throw;
         }
     }
-        
+
     public async Task<bool> MarkPaidAsync(string orderCode, CancellationToken ct)
     {
-        var bk = await _db.Bookings.FirstOrDefaultAsync(x => x.OrderCode == orderCode, ct);
-        if (bk is null) return false;
-        if (bk.Status == "Paid") return true;
-        bk.Status = "Paid";
-        await _db.SaveChangesAsync(ct);
-        return true;
+        await using var tx = await _db.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, ct);
+        try
+        {
+            var bk = await _db.Bookings.FirstOrDefaultAsync(x => x.OrderCode == orderCode, ct);
+            if (bk is null) return false;
+
+            if (bk.Status == "Paid")
+            {
+                await tx.CommitAsync(ct);
+                return true;
+            }
+            if (bk.Status != "Pending")
+            {
+                await tx.RollbackAsync(ct);
+                return false;
+            }
+
+            bk.Status = "Paid";
+            await _db.SaveChangesAsync(ct);
+            await tx.CommitAsync(ct);
+            return true;
+        }
+        catch
+        {
+            await tx.RollbackAsync(ct);
+            throw;
+        }
     }
 }

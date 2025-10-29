@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "5GgTE3o7Kns=",
+  "dgSpecHash": "D6h0SnJAB80=",
   "success": true,
   "projectFilePath": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Cinema.Api.csproj",
   "expectedPackageFiles": [
@@ -60,7 +60,8 @@
     "C:\\Users\\emlap\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
     "C:\\Users\\emlap\\.nuget\\packages\\system.text.json\\9.0.0\\system.text.json.9.0.0.nupkg.sha512",
     "C:\\Users\\emlap\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "C:\\Users\\emlap\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
+    "C:\\Users\\emlap\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512",
+    "C:\\Users\\emlap\\.nuget\\packages\\ulid\\1.4.1\\ulid.1.4.1.nupkg.sha512"
   ],
   "logs": []
 }
