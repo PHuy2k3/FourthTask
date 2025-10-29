@@ -47,9 +47,12 @@ public class AdminShowtimesController : ControllerBase
                 RoomName = s.Room!.Name,
                 CinemaName = s.Room!.Cinema!.Name,
                 s.StartAt,
-                BasePrice = s.Seats.Select(x => (decimal?)x.Price).Min() ?? 0m,
+                BasePrice = s.Seats.Min(x => (decimal?)x.Price) ?? 0m,
                 SeatsTotal = s.Seats.Count,
-                SeatsBooked = s.Seats.Count(x => ShowtimeSeatStatus.IsBooked(x.Status))
+                SeatsBooked = s.Seats.Count(x =>
+                    x.Status == ShowtimeSeatStatus.Booked ||
+                    x.Status == ShowtimeSeatStatus.Sold ||
+                    x.Status == ShowtimeSeatStatus.Reserved)
             })
             .ToListAsync(ct);
         return Ok(data);
