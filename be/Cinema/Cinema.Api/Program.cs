@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Text.Json.Serialization;
 using Cinema.Biz.Irepo;
 using Cinema.Biz.Repo;
@@ -7,15 +8,54 @@ using Cinema.Security;
 using Cinema.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var b = WebApplication.CreateBuilder(args);
 var cfg = b.Configuration;
+var env = b.Environment;
 
 // 1) DB
-b.Services.AddDbContext<AppDbContext>(o =>
-    o.UseSqlServer(cfg.GetConnectionString("Default")));
+var dbProvider = (cfg["DbProvider"] ?? "SqlServer").Trim();
+var sqlServerCommandTimeout = cfg.GetValue<int?>("Database:CommandTimeoutSeconds");
+b.Services.AddDbContext<AppDbContext>((_, o) =>
+{
+    var conn = cfg.GetConnectionString("Default");
+    switch (dbProvider.ToLowerInvariant())
+    {
+        case "sqlite":
+            {
+                conn = NormalizeSqliteConnectionString(conn, env.ContentRootPath);
+                o.UseSqlite(conn);
+                break;
+            }
+        case "sqlserver":
+        case "sql":
+        case "mssql":
+        case "sql-server":
+            {
+                if (string.IsNullOrWhiteSpace(conn))
+                {
+                    throw new InvalidOperationException("ConnectionStrings:Default must be configured for SQL Server.");
+                }
+
+                o.UseSqlServer(conn, sql =>
+                {
+                    if (sqlServerCommandTimeout is int timeoutSeconds and > 0)
+                    {
+                        sql.CommandTimeout(timeoutSeconds);
+                    }
+
+                    sql.EnableRetryOnFailure();
+                });
+
+                break;
+            }
+        default:
+            throw new InvalidOperationException($"Unsupported DbProvider '{dbProvider}'. Use 'SqlServer' or 'Sqlite'.");
+    }
+});
 
 // dotnet run2) Options
 b.Services.Configure<JwtOptions>(cfg.GetSection("Jwt"));
@@ -113,23 +153,85 @@ app.UseEndpoints(e =>
 // 8) Seed Admin 1 lần (dev) + đảm bảo DB sẵn
 using (var scope = app.Services.CreateScope())
 {
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await db.Database.EnsureCreatedAsync();
 
-    // Tạo tài khoản Admin mặc định nếu chưa có
-    if (!db.Users.Any(u => u.Email == "admin@cinema.local"))
+    var ensureCreatedTimeout = cfg.GetValue<int?>("Database:EnsureCreatedCommandTimeoutSeconds") ?? 120;
+    if (ensureCreatedTimeout > 0)
     {
-        var hasher = new Microsoft.AspNetCore.Identity.PasswordHasher<object>();
-        db.Users.Add(new Cinema.Data.Model.Users.User
+        db.Database.SetCommandTimeout(TimeSpan.FromSeconds(ensureCreatedTimeout));
+    }
+
+    try
+    {
+        await db.Database.EnsureCreatedAsync();
+
+        // Tạo tài khoản Admin mặc định nếu chưa có
+        if (!db.Users.Any(u => u.Email == "admin@cinema.local"))
         {
-            Email = "admin@cinema.local",
-            FullName = "Site Admin",
-            Role = "Admin",
-            PasswordHash = hasher.HashPassword(null!, "Admin@123")
-        });
-        await db.SaveChangesAsync();
-        Console.WriteLine("Seeded admin: admin@cinema.local / Admin@123");
+            var hasher = new Microsoft.AspNetCore.Identity.PasswordHasher<object>();
+            db.Users.Add(new Cinema.Data.Model.Users.User
+            {
+                Email = "admin@cinema.local",
+                FullName = "Site Admin",
+                Role = "Admin",
+                PasswordHash = hasher.HashPassword(null!, "Admin@123")
+            });
+            await db.SaveChangesAsync();
+            Console.WriteLine("Seeded admin: admin@cinema.local / Admin@123");
+        }
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Failed to initialise database using provider '{Provider}'. Check your connection string and database server.", dbProvider);
+        throw;
+    }
+    finally
+    {
+        db.Database.SetCommandTimeout(null);
     }
 }
-
 app.Run();
+
+static string NormalizeSqliteConnectionString(string? connectionString, string contentRootPath)
+{
+    const string dataSourcePrefix = "Data Source=";
+
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        var defaultPath = Path.Combine(contentRootPath, "App_Data", "cinema.db");
+        EnsureDirectoryExists(defaultPath);
+        return $"{dataSourcePrefix}{defaultPath}";
+    }
+
+    var trimmed = connectionString.Trim();
+
+    if (!trimmed.Contains('=') && !trimmed.Contains(';'))
+    {
+        var fallbackPath = Path.Combine(contentRootPath, trimmed);
+        EnsureDirectoryExists(fallbackPath);
+        return $"{dataSourcePrefix}{fallbackPath}";
+    }
+
+    if (trimmed.StartsWith(dataSourcePrefix, StringComparison.OrdinalIgnoreCase))
+    {
+        var dataSourceValue = trimmed[dataSourcePrefix.Length..].Trim();
+        if (!Path.IsPathRooted(dataSourceValue))
+        {
+            var fullPath = Path.Combine(contentRootPath, dataSourceValue);
+            EnsureDirectoryExists(fullPath);
+            return $"{dataSourcePrefix}{fullPath}";
+        }
+    }
+
+    return trimmed;
+}
+
+static void EnsureDirectoryExists(string filePath)
+{
+    var directory = Path.GetDirectoryName(filePath);
+    if (!string.IsNullOrEmpty(directory))
+    {
+        Directory.CreateDirectory(directory);
+    }
+}
