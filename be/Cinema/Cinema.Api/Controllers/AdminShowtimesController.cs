@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cinema.Data;
+using Cinema.Data.Model.Showtimes;
 
 namespace Cinema.Api.Controllers;
 
@@ -48,7 +49,7 @@ public class AdminShowtimesController : ControllerBase
                 s.StartAt,
                 BasePrice = s.Seats.Select(x => (decimal?)x.Price).Min() ?? 0m,
                 SeatsTotal = s.Seats.Count,
-                SeatsBooked = s.Seats.Count(x => x.Status == "Booked")
+                SeatsBooked = s.Seats.Count(x => ShowtimeSeatStatus.IsBooked(x.Status))
             })
             .ToListAsync(ct);
         return Ok(data);
@@ -112,7 +113,7 @@ public class AdminShowtimesController : ControllerBase
         {
             ShowtimeId = st.Id,
             SeatId = seat.Id,
-            Status = "Available",
+            Status = ShowtimeSeatStatus.Available,
             Price = req.BasePrice
         });
         await _db.ShowtimeSeats.AddRangeAsync(seats, ct);
@@ -159,7 +160,7 @@ public class AdminShowtimesController : ControllerBase
 
         if (priceChanged)
         {
-            foreach (var ss in st.Seats.Where(x => x.Status == "Available"))
+            foreach (var ss in st.Seats.Where(x => ShowtimeSeatStatus.IsAvailable(x.Status)))
                 ss.Price = req.BasePrice;
             await _db.SaveChangesAsync(ct);
         }
@@ -173,7 +174,7 @@ public class AdminShowtimesController : ControllerBase
     {
         var st = await _db.Showtimes.Include(s => s.Seats).FirstOrDefaultAsync(s => s.Id == id, ct);
         if (st is null) return NotFound();
-        if (st.Seats.Any(x => x.Status == "Booked"))
+        foreach (var ss in st.Seats.Where(x => ShowtimeSeatStatus.IsAvailable(x.Status)))
             return Conflict("Cannot delete: there are booked seats.");
 
         _db.ShowtimeSeats.RemoveRange(st.Seats);

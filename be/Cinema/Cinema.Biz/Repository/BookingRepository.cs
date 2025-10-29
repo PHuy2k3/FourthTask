@@ -1,7 +1,9 @@
 ﻿using System.Data;
+using System.Linq;
 using Cinema.Biz.Irepo;
 using Cinema.Data;
 using Cinema.Data.Model.Bookings;
+using Cinema.Data.Model.Showtimes;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Biz.Repo;
@@ -14,7 +16,11 @@ public class BookingRepository(AppDbContext _db) : Repository<Booking>(_db), IBo
         IReadOnlyCollection<int> showtimeSeatIds,
         CancellationToken ct)
     {
-        var seatIds = showtimeSeatIds.Distinct().ToArray();
+        var seatIds = showtimeSeatIds
+            .Where(id => id > 0)
+            .Distinct()
+            .ToArray();
+
         if (seatIds.Length == 0)
             throw new InvalidOperationException("Không có ghế hợp lệ để đặt.");
 
@@ -50,16 +56,30 @@ public class BookingRepository(AppDbContext _db) : Repository<Booking>(_db), IBo
 
             // 3) Chỉ cho phép ghế Available (vì chưa có LockedByUserId)
             var invalid = seats.FirstOrDefault(s =>
-                s.Status == "Booked"
-                || (s.Status == "Locked" && s.LockedUntil.HasValue && s.LockedUntil.Value >= now));
+                ShowtimeSeatStatus.IsBooked(s.Status)
+                || (ShowtimeSeatStatus.IsLocked(s.Status)
+                    && (!s.LockedUntil.HasValue || s.LockedUntil.Value < now))
+                || (!ShowtimeSeatStatus.IsAvailable(s.Status)
+                    && !ShowtimeSeatStatus.IsLocked(s.Status)));
 
             if (invalid != null)
                 throw new InvalidOperationException("Ghế đã được giữ hoặc không khả dụng.");
 
+            var seatIdsWithActiveBooking = await _db.BookingItems
+                .Where(x => seatIds.Contains(x.ShowtimeSeatId)
+                            && x.Booking.Status != "Failed"
+                            && x.Booking.Status != "Canceled")
+                .Select(x => x.ShowtimeSeatId)
+                .Distinct()
+                .ToArrayAsync(ct);
+
+            if (seatIdsWithActiveBooking.Length > 0)
+                throw new InvalidOperationException("Một hoặc nhiều ghế đã được đặt trước đó.");
+
             // 4) Đặt trạng thái Booked
             foreach (var s in seats)
             {
-                s.Status = "Booked";
+                s.Status = ShowtimeSeatStatus.Sold;
                 s.LockedUntil = null;
             }
 
@@ -78,6 +98,7 @@ public class BookingRepository(AppDbContext _db) : Repository<Booking>(_db), IBo
             };
 
             _db.Bookings.Add(booking);
+
             foreach (var s in seats)
             {
                 _db.BookingItems.Add(new BookingItem

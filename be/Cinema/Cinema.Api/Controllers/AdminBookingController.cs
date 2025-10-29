@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Cinema.Data;
-
+using Cinema.Data.Model.Showtimes;
 namespace Cinema.Api.Controllers;
 
 [ApiController]
@@ -91,7 +91,7 @@ public class AdminBookingsController : ControllerBase
         booking.Status = "Canceled";
         foreach (var item in booking.Items)
         {
-            item.ShowtimeSeat.Status = "Available";
+            item.ShowtimeSeat.Status = ShowtimeSeatStatus.Available;
             item.ShowtimeSeat.LockedUntil = null;
         }
 

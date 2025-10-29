@@ -110,15 +110,15 @@ namespace Cinema.Biz.Repo
                 return false; // two identifiers pointing to the same seat
 
             if (seatsToLock.Any(ss =>
-                    ss.Status == "Booked" ||
-                    (ss.Status == "Locked" && ss.LockedUntil.HasValue && ss.LockedUntil.Value > now)))
+                    ShowtimeSeatStatus.IsBooked(ss.Status) ||
+                    (ShowtimeSeatStatus.IsLocked(ss.Status) && ss.LockedUntil.HasValue && ss.LockedUntil.Value > now)))
             {
                 return false;
             }
 
             foreach (var ss in seatsToLock)
             {
-                ss.Status = "Locked";
+                ss.Status = ShowtimeSeatStatus.Locked;
                 ss.LockedUntil = until;
             }
 
