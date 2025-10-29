@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\cinema.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\cinema.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\cinema.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\cinema.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\adminmoviescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -246,17 +246,87 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AdminMoviesRepository.cs",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
+              "RelativeDocumentMoniker": "Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
+              "RelativeToolTip": "Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAuwCYAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T08:10:59.53Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ShowtimeSeatStatus.cs",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeatStatus.cs",
+              "RelativeDocumentMoniker": "Cinema.Data.Model\\ShowtimeSeatStatus.cs",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeatStatus.cs",
+              "RelativeToolTip": "Cinema.Data.Model\\ShowtimeSeatStatus.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T07:52:38.91Z"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Program.cs",
+              "RelativeDocumentMoniker": "Cinema.Api\\Program.cs",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Program.cs",
+              "RelativeToolTip": "Cinema.Api\\Program.cs",
+              "ViewState": "AgIAAJ8AAAAAAAAAAAAAALYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T07:55:42.185Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Cinema.Api.csproj",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Cinema.Api.csproj",
+              "RelativeDocumentMoniker": "Cinema.Api\\Cinema.Api.csproj",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Cinema.Api.csproj",
+              "RelativeToolTip": "Cinema.Api\\Cinema.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-29T07:47:12.634Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.json",
+              "RelativeDocumentMoniker": "Cinema.Api\\appsettings.json",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.json",
+              "RelativeToolTip": "Cinema.Api\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-29T03:46:21.801Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.Development.json",
               "RelativeDocumentMoniker": "Cinema.Api\\appsettings.Development.json",
               "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.Development.json",
               "RelativeToolTip": "Cinema.Api\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-10-29T08:21:14.416Z",
               "EditorCaption": ""
@@ -271,68 +341,7 @@
               "RelativeToolTip": "Cinema.Api\\Controllers\\AdminMoviesController.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-29T08:12:00.704Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AdminMoviesRepository.cs",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
-              "RelativeDocumentMoniker": "Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
-              "RelativeToolTip": "Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAuwCYAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-29T08:10:59.53Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ShowtimeSeatStatus.cs",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeatStatus.cs",
-              "RelativeDocumentMoniker": "Cinema.Data.Model\\ShowtimeSeatStatus.cs",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeatStatus.cs",
-              "RelativeToolTip": "Cinema.Data.Model\\ShowtimeSeatStatus.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-29T07:52:38.91Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Program.cs",
-              "RelativeDocumentMoniker": "Cinema.Api\\Program.cs",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Program.cs",
-              "RelativeToolTip": "Cinema.Api\\Program.cs",
-              "ViewState": "AgIAAJ8AAAAAAAAAAAAAAOwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:55:42.185Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Cinema.Api.csproj",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Cinema.Api.csproj",
-              "RelativeDocumentMoniker": "Cinema.Api\\Cinema.Api.csproj",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Cinema.Api.csproj",
-              "RelativeToolTip": "Cinema.Api\\Cinema.Api.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-09-29T07:47:12.634Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-29T08:12:00.704Z"
             },
             {
               "$type": "Document",
@@ -345,19 +354,6 @@
               "ViewState": "AgIAAFgAAAAAAAAAAAAmwGsAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-29T08:55:51.37Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.json",
-              "RelativeDocumentMoniker": "Cinema.Api\\appsettings.json",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.json",
-              "RelativeToolTip": "Cinema.Api\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAXAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-09-29T03:46:21.801Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -405,8 +401,7 @@
               "RelativeToolTip": "Cinema\\Time\\IAppClock.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T06:52:33.716Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T06:52:33.716Z"
             },
             {
               "$type": "Document",
@@ -646,8 +641,7 @@
               "RelativeToolTip": "Cinema\\Cinema.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-09-29T07:00:13.671Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:00:13.671Z"
             },
             {
               "$type": "Document",
@@ -839,8 +833,7 @@
               "RelativeToolTip": "Cinema.Biz\\Cinema.Biz.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-09-29T07:47:36.748Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:47:36.748Z"
             },
             {
               "$type": "Document",
@@ -876,8 +869,7 @@
               "RelativeToolTip": "Cinema.Data\\Cinema.Data.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-09-29T07:36:57.396Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:36:57.396Z"
             },
             {
               "$type": "Document",
@@ -901,8 +893,7 @@
               "RelativeToolTip": "Cinema.Data.Model\\Cinema.Data.Model.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-09-29T07:24:24.617Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:24:24.617Z"
             },
             {
               "$type": "Document",
