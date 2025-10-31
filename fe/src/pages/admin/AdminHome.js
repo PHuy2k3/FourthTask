@@ -23,6 +23,11 @@ export default function AdminHome() {
           onClick={() => nav('/admin/cinemas')}
         />
         <Button
+          label="Quản lý Phòng"
+          icon="pi pi-th-large"
+          onClick={() => nav('/admin/rooms')}
+        />
+        <Button
           label="Quản lý Suất chiếu"
           icon="pi pi-calendar"
           onClick={() => nav('/admin/showtimes')}

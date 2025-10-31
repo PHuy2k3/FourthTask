@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\adminbookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\controllers\\adminbookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\adminshowtimescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\controllers\\adminshowtimescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -49,14 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\adminshowtimescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\controllers\\adminshowtimescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\adminbookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\controllers\\adminbookingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{153CBA59-6EF8-48E9-875D-0E4488F7FE49}|Cinema.Biz\\Cinema.Biz.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.biz\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -258,31 +258,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AdminMoviesRepository.cs",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
-              "RelativeDocumentMoniker": "Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
-              "RelativeToolTip": "Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAuwCYAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-29T08:10:59.53Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ShowtimeSeatStatus.cs",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeatStatus.cs",
-              "RelativeDocumentMoniker": "Cinema.Data.Model\\ShowtimeSeatStatus.cs",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeatStatus.cs",
-              "RelativeToolTip": "Cinema.Data.Model\\ShowtimeSeatStatus.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-29T07:52:38.91Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Program.cs",
               "RelativeDocumentMoniker": "Cinema.Api\\Program.cs",
@@ -290,12 +266,11 @@
               "RelativeToolTip": "Cinema.Api\\Program.cs",
               "ViewState": "AgIAAJ8AAAAAAAAAAAAAALYAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-29T07:55:42.185Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T07:55:42.185Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Cinema.Api.csproj",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Cinema.Api.csproj",
               "RelativeDocumentMoniker": "Cinema.Api\\Cinema.Api.csproj",
@@ -307,7 +282,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.json",
               "RelativeDocumentMoniker": "Cinema.Api\\appsettings.json",
@@ -315,25 +290,72 @@
               "RelativeToolTip": "Cinema.Api\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-09-29T03:46:21.801Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-29T03:46:21.801Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.Development.json",
               "RelativeDocumentMoniker": "Cinema.Api\\appsettings.Development.json",
               "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\appsettings.Development.json",
               "RelativeToolTip": "Cinema.Api\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-29T08:21:14.416Z",
+              "WhenOpened": "2025-10-29T08:21:14.416Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AdminShowtimesController.cs",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminShowtimesController.cs",
+              "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\AdminShowtimesController.cs",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminShowtimesController.cs",
+              "RelativeToolTip": "Cinema.Api\\Controllers\\AdminShowtimesController.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAmwDMAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T07:49:00.677Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AdminBookingController.cs",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminBookingController.cs",
+              "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\AdminBookingController.cs",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminBookingController.cs",
+              "RelativeToolTip": "Cinema.Api\\Controllers\\AdminBookingController.cs",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAAUAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T06:35:33.556Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
+              "Title": "ShowtimeSeatStatus.cs",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeatStatus.cs",
+              "RelativeDocumentMoniker": "Cinema.Data.Model\\ShowtimeSeatStatus.cs",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeatStatus.cs",
+              "RelativeToolTip": "Cinema.Data.Model\\ShowtimeSeatStatus.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T07:52:38.91Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AdminMoviesRepository.cs",
+              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
+              "RelativeDocumentMoniker": "Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
+              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
+              "RelativeToolTip": "Cinema.Biz\\Repository\\AdminMoviesRepository.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAuwCYAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-29T08:10:59.53Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "AdminMoviesController.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminMoviesController.cs",
               "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\AdminMoviesController.cs",
@@ -345,7 +367,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "BookingRepository.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\BookingRepository.cs",
               "RelativeDocumentMoniker": "Cinema.Biz\\Repository\\BookingRepository.cs",
@@ -357,7 +379,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "BookingsController.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\BookingsController.cs",
               "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\BookingsController.cs",
@@ -381,7 +403,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "ShowtimeRepository.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Biz\\Repository\\ShowtimeRepository.cs",
               "RelativeDocumentMoniker": "Cinema.Biz\\Repository\\ShowtimeRepository.cs",
@@ -393,7 +415,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "IAppClock.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema\\Time\\IAppClock.cs",
               "RelativeDocumentMoniker": "Cinema\\Time\\IAppClock.cs",
@@ -405,19 +427,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "AdminShowtimesController.cs",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminShowtimesController.cs",
-              "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\AdminShowtimesController.cs",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminShowtimesController.cs",
-              "RelativeToolTip": "Cinema.Api\\Controllers\\AdminShowtimesController.cs",
-              "ViewState": "AgIAAJ0AAAAAAAAAAAAQwLEAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-29T07:49:00.677Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "ShowtimeSeat.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Data.Model\\ShowtimeSeat.cs",
               "RelativeDocumentMoniker": "Cinema.Data.Model\\ShowtimeSeat.cs",
@@ -462,18 +472,6 @@
               "ViewState": "AgIAAAMAAAAAAAAAAAA2wAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-29T06:52:07.475Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "AdminBookingController.cs",
-              "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminBookingController.cs",
-              "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\AdminBookingController.cs",
-              "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AdminBookingController.cs",
-              "RelativeToolTip": "Cinema.Api\\Controllers\\AdminBookingController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T06:35:33.556Z"
             },
             {
               "$type": "Document",

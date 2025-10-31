@@ -13,6 +13,7 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminShowtimes from './pages/admin/AdminShowtimes';
 import AdminCinemas from './pages/admin/AdminCinemas';
 import AdminBookings from './pages/admin/AdminBookings';
+import AdminRooms from './pages/admin/AdminRooms';
 import Profile from './pages/Profile';
 
 // PrimeReact UI
@@ -197,6 +198,16 @@ export default function App() {
             <Shell>
               <AdminRoute>
                 <AdminCinemas />
+              </AdminRoute>
+            </Shell>
+          }
+        />
+        <Route
+          path="/admin/rooms"
+          element={
+            <Shell>
+              <AdminRoute>
+                <AdminRooms />
               </AdminRoute>
             </Shell>
           }
