@@ -1,75 +1,67 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// Cinema.Api/Controllers/AdminCinemasController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using Cinema.Data;
+using Cinema.Biz.Admin;
 
 namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/admin/cinemas")]
-// TẠM: [AllowAnonymous] để test 404. Khi thấy route rồi, đổi lại [Authorize(Roles = "Admin")]
-[AllowAnonymous]
 public class AdminCinemasController : ControllerBase
 {
-    private readonly AppDbContext _db;
-    public AdminCinemasController(AppDbContext db) => _db = db;
+    private readonly ICinemaAdminRepository _biz;
+    public AdminCinemasController(ICinemaAdminRepository biz) => _biz = biz;
 
-    public record CinemaReq([Required] string Name, string? Address);
+    // Controller không dùng [Required]; để Biz validate
+    public record CreateReq(string Name, string? Address);
+    public record UpdateReq(string Name, string? Address);
 
     [HttpGet]
     public async Task<IActionResult> List(CancellationToken ct)
-        => Ok(await _db.Cinemas
-            .OrderBy(c => c.Name)
-            .Select(c => new { c.Id, c.Name, c.Address })
-            .ToListAsync(ct));
+        => Ok(await _biz.ListAsync(ct));
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id, CancellationToken ct)
-    {
-        var c = await _db.Cinemas.FindAsync([id], ct);
-        return c is null ? NotFound() : Ok(new { c.Id, c.Name, c.Address });
-    }
+        => (await _biz.GetAsync(id, ct)) is { } dto ? Ok(dto) : NotFound();
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CinemaReq req, CancellationToken ct)
+    public async Task<IActionResult> Create([FromBody] CreateReq req, CancellationToken ct)
     {
-        if (!ModelState.IsValid) return ValidationProblem(ModelState);
-        var name = req.Name.Trim();
-        if (await _db.Cinemas.AnyAsync(x => x.Name == name, ct))
-            return Conflict("Cinema name already exists.");
-
-        var c = new Cinema.Data.Model.Cinemas.Cinema { Name = name, Address = req.Address };
-        _db.Cinemas.Add(c);
-        await _db.SaveChangesAsync(ct);
-        return CreatedAtAction(nameof(Get), new { id = c.Id }, new { c.Id, c.Name, c.Address });
+        try
+        {
+            var created = await _biz.CreateAsync(new CreateCinema(req.Name, req.Address), ct);
+            return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
+        }
+        catch (ValidationException ex) { return ValidationProblem(title: "Validation failed", detail: ex.Message); }
+        catch (ConflictException ex) { return Conflict(ex.Message); }
+        catch (ForbiddenException ex) { return StatusCode(403, ex.Message); }
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, [FromBody] CinemaReq req, CancellationToken ct)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateReq req, CancellationToken ct)
     {
-        var c = await _db.Cinemas.FindAsync([id], ct);
-        if (c is null) return NotFound();
-
-        var name = req.Name.Trim();
-        if (await _db.Cinemas.AnyAsync(x => x.Id != id && x.Name == name, ct))
-            return Conflict("Cinema name already exists.");
-
-        c.Name = name;
-        c.Address = req.Address;
-        await _db.SaveChangesAsync(ct);
-        return Ok(new { c.Id, c.Name, c.Address });
+        try
+        {
+            var updated = await _biz.UpdateAsync(id, new UpdateCinema(req.Name, req.Address), ct);
+            return updated is null ? NotFound() : Ok(updated);
+        }
+        catch (ValidationException ex) { return ValidationProblem(title: "Validation failed", detail: ex.Message); }
+        catch (ConflictException ex) { return Conflict(ex.Message); }
+        catch (ForbiddenException ex) { return StatusCode(403, ex.Message); }
     }
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {
-        var c = await _db.Cinemas.Include(x => x.Rooms).FirstOrDefaultAsync(x => x.Id == id, ct);
-        if (c is null) return NotFound();
-        if (c.Rooms.Any())
-            return Conflict("Cannot delete a cinema that still has rooms.");
-        _db.Cinemas.Remove(c);
-        await _db.SaveChangesAsync(ct);
-        return NoContent();
+        try
+        {
+            var r = await _biz.DeleteAsync(id, ct);
+            return r switch
+            {
+                DeleteResult.NotFound => NotFound(),
+                DeleteResult.Conflict => Conflict("Cannot delete a cinema that still has rooms."),
+                _ => NoContent()
+            };
+        }
+        catch (ForbiddenException ex) { return StatusCode(403, ex.Message); }
     }
 }
