@@ -1,5 +1,5 @@
 ﻿// Api/Common/ApiExceptionMiddleware.cs
-using Cinema.Biz.Admin;
+using Cinema.Biz.Common;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 

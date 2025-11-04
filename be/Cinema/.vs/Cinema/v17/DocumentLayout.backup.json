@@ -290,8 +290,7 @@
               "RelativeToolTip": "Cinema.Biz\\Common\\Errors.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-04T04:30:54.243Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-04T04:30:54.243Z"
             },
             {
               "$type": "Document",
@@ -303,8 +302,7 @@
               "RelativeToolTip": "Cinema.Api\\Common\\ApiExceptionMiddleware.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-04T04:27:36.539Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-04T04:27:36.539Z"
             },
             {
               "$type": "Document",
@@ -314,7 +312,7 @@
               "RelativeDocumentMoniker": "Cinema.Api\\Common\\GlobalExceptionFilter.cs",
               "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Common\\GlobalExceptionFilter.cs",
               "RelativeToolTip": "Cinema.Api\\Common\\GlobalExceptionFilter.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA1AAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAmwBsAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-04T04:22:35.027Z",
               "EditorCaption": ""
@@ -329,8 +327,7 @@
               "RelativeToolTip": "Cinema.Biz\\Repository\\CinemaAdminRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAFAAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-04T03:58:31.436Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-04T03:58:31.436Z"
             },
             {
               "$type": "Document",
@@ -342,8 +339,7 @@
               "RelativeToolTip": "Cinema.Biz\\IRepository\\IAdminCinemasRepository.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-04T03:54:02.466Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-04T03:54:02.466Z"
             },
             {
               "$type": "Document",
@@ -365,7 +361,7 @@
               "RelativeDocumentMoniker": "Cinema.Api\\Program.cs",
               "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Program.cs",
               "RelativeToolTip": "Cinema.Api\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-29T07:55:42.185Z",
               "EditorCaption": ""
@@ -404,8 +400,7 @@
               "RelativeToolTip": "Cinema.Api\\Controllers\\AdminCinemasController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T03:03:44.105Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-06T03:03:44.105Z"
             },
             {
               "$type": "Document",

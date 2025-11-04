@@ -1,8 +1,8 @@
 ﻿using System.Net;
+using Cinema.Biz.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using Cinema.Biz.Admin; // hoặc Cinema.Biz.Common nếu bạn gom exceptions riêng
 
 namespace Cinema.Api.Common // 👈 THÊM DÒNG NÀY
 {

@@ -1,6 +1,7 @@
 ﻿// Cinema.Api/Controllers/AdminCinemasController.cs
-using Microsoft.AspNetCore.Mvc;
 using Cinema.Biz.Admin;
+using Cinema.Biz.Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Api.Controllers;
 

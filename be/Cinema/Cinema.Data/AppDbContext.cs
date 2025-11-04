@@ -7,6 +7,7 @@ using Cinema.Data.Model.Seats;
 using Cinema.Data.Model.Showtimes;
 using Cinema.Data.Model.Bookings;
 using Cinema.Data.Model.Payments;
+using Cinema.Data.Model.Departments;
 
 namespace Cinema.Data;
 public class AppDbContext(DbContextOptions<AppDbContext> opt) : DbContext(opt)
@@ -21,6 +22,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> opt) : DbContext(opt)
     public DbSet<Booking> Bookings => Set<Booking>();
     public DbSet<BookingItem> BookingItems => Set<BookingItem>();
     public DbSet<Payment> Payments => Set<Payment>();
+    public DbSet<Department> Departments => Set<Department>();
+
 
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -30,5 +33,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> opt) : DbContext(opt)
         b.Entity<ShowtimeSeat>().Property(x => x.Price).HasPrecision(18, 2);
         b.Entity<BookingItem>().Property(x => x.Price).HasPrecision(18, 2);
         b.Entity<Booking>().Property(x => x.Amount).HasPrecision(18, 2);
+        b.Entity<Department>().HasIndex(x => x.Code).IsUnique();
     }
 }

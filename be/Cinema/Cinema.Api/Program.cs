@@ -1,7 +1,7 @@
-﻿using Cinema.Api.Common;     // chứa GlobalExceptionFilter
-using Cinema.Biz.Admin;      // chứa ICinemaAdminRepository, CinemaAdminRepository
-using Cinema.Biz.Common;     // chứa ValidationException, ConflictException, ForbiddenException
-using Cinema.Data;           // chứa AppDbContext
+﻿using Cinema.Api.Common;    
+using Cinema.Biz.Admin;     
+using Cinema.Biz.Common;    
+using Cinema.Data;           
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,11 +17,12 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 // -------------------- DEPENDENCY INJECTION --------------------
 builder.Services.AddScoped<ICinemaAdminRepository, CinemaAdminRepository>();
+builder.Services.AddScoped<IAdminDepartmentsRepository, DepartmentAdminRepository>();
 
 // -------------------- CONTROLLERS + GLOBAL EXCEPTION FILTER --------------------
 builder.Services.AddControllers(opt =>
 {
-    opt.Filters.Add<GlobalExceptionFilter>();  // Gom toàn bộ exception ra đây để log
+    opt.Filters.Add<GlobalExceptionFilter>();  
 });
 
 // -------------------- PROBLEMDETAILS CHO MODELSTATE --------------------
@@ -68,9 +69,8 @@ app.UseCors("AllowAll");
 
 app.UseRouting();
 
-// nếu có Auth thì mở
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

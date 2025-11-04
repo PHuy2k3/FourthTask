@@ -1,4 +1,5 @@
 ﻿// Cinema.Biz/Admin/CinemaAdminRepository.cs
+using Cinema.Biz.Common;
 using Cinema.Data;
 using Microsoft.EntityFrameworkCore;
 
