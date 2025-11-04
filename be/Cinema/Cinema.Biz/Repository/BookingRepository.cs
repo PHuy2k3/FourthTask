@@ -8,8 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Biz.Repo;
 
-public class BookingRepository(AppDbContext _db) : Repository<Booking>(_db), IBookingRepository
+public class BookingRepository : Repository<Booking>, IBookingRepository
 {
+    public BookingRepository(AppDbContext db) : base(db)
+    {
+    }
     public async Task<Booking> CreateFromLockedSeatsAsync(
         int userId,
         int showtimeId,

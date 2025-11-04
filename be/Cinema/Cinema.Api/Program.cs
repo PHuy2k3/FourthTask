@@ -1,9 +1,16 @@
-﻿using Cinema.Api.Common;    
-using Cinema.Biz.Admin;     
-using Cinema.Biz.Common;    
-using Cinema.Data;           
+﻿using Cinema.Api.Common;
+using System.Text;
+using Cinema.Biz.Admin;
+using Cinema.Biz.Common;
+using Cinema.Biz.Irepo;
+using Cinema.Biz.Repo;
+using Cinema.Data;
+using Cinema.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,14 +22,24 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(conn);
 });
 
+// -------------------- OPTIONS --------------------
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+
 // -------------------- DEPENDENCY INJECTION --------------------
 builder.Services.AddScoped<ICinemaAdminRepository, CinemaAdminRepository>();
 builder.Services.AddScoped<IAdminDepartmentsRepository, DepartmentAdminRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IShowtimeRepository, ShowtimeRepository>();
+builder.Services.AddScoped<IBookingRepository>(sp =>
+{
+    var db = sp.GetRequiredService<AppDbContext>();
+    return new BookingRepository(db);
+});
 
 // -------------------- CONTROLLERS + GLOBAL EXCEPTION FILTER --------------------
 builder.Services.AddControllers(opt =>
 {
-    opt.Filters.Add<GlobalExceptionFilter>();  
+    opt.Filters.Add<GlobalExceptionFilter>();
 });
 
 // -------------------- PROBLEMDETAILS CHO MODELSTATE --------------------
@@ -51,6 +68,37 @@ builder.Services.AddCors(opt =>
          .AllowAnyHeader()
          .AllowAnyMethod());
 });
+
+// -------------------- AUTHENTICATION + AUTHORIZATION --------------------
+var jwtSection = builder.Configuration.GetSection("Jwt");
+var jwtKey = jwtSection.GetValue<string>(nameof(JwtOptions.Key)) ?? string.Empty;
+if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
+{
+    throw new InvalidOperationException("JWT key must be configured and at least 256 bits long.");
+}
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSection.GetValue<string>(nameof(JwtOptions.Issuer)),
+            ValidAudience = jwtSection.GetValue<string>(nameof(JwtOptions.Audience)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 // -------------------- SWAGGER --------------------
 builder.Services.AddEndpointsApiExplorer();
