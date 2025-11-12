@@ -63,13 +63,54 @@ namespace Cinema.Biz.Repo
 
             return data;
         }
-        public async Task<bool> LockSeatsAsync(int showtimeId, IReadOnlyCollection<int> seatIds, int lockSeconds, CancellationToken ct)
+        public async Task<ShowtimeDetails?> GetDetailsAsync(int showtimeId, CancellationToken ct)
         {
-            if (seatIds == null || seatIds.Count == 0) return false;
+            var st = await _db.Showtimes
+                .Include(x => x.Movie)
+                .Include(x => x.Room)!.ThenInclude(r => r.Cinema)
+                .Include(x => x.Seats)!.ThenInclude(ss => ss.Seat)
+                .FirstOrDefaultAsync(x => x.Id == showtimeId, ct);
+
+            if (st is null) return null;
+
+            var seatDtos = st.Seats
+                .OrderBy(ss => ss.Seat!.Code)
+                .Select(ss => new ShowtimeSeatDetails(
+                    ss.Id,
+                    ss.SeatId,
+                    ss.ShowtimeId,
+                    ss.Status,
+                    ss.LockedUntil,
+                    ss.Price,
+                    new ShowtimeSeatInfo(ss.Seat!.Id, ss.Seat.Code, ss.Seat.Type)
+                ))
+                .ToList();
+
+            return new ShowtimeDetails(
+                st.Id,
+                st.StartAt,
+                new ShowtimeMovie(st.Movie!.Id, st.Movie.Title, st.Movie.DurationMin),
+                new ShowtimeRoom(
+                    st.Room!.Id,
+                    st.Room.Name,
+                    new ShowtimeCinema(st.Room.Cinema!.Id, st.Room.Cinema.Name)
+                ),
+                seatDtos
+            );
+        }
+
+        public async Task<LockSeatsResult> LockSeatsAsync(int showtimeId, IReadOnlyCollection<int>? seatIds, int lockSeconds, CancellationToken ct)
+        {
+            if (seatIds == null || seatIds.Count == 0)
+                return LockSeatsResult.Fail(LockSeatsError.InvalidSeatSelection);
 
             var distinctSeatIds = seatIds.Distinct().ToArray();
-            if (distinctSeatIds.Length == 0) 
-                return false;
+            if (distinctSeatIds.Length == 0)
+                return LockSeatsResult.Fail(LockSeatsError.InvalidSeatSelection);
+
+            var showtimeExists = await _db.Showtimes.AnyAsync(s => s.Id == showtimeId, ct);
+            if (!showtimeExists)
+                return LockSeatsResult.Fail(LockSeatsError.ShowtimeNotFound);
 
             var now = DateTime.UtcNow;
             var until = now.AddSeconds(Math.Max(30, lockSeconds));
@@ -80,7 +121,7 @@ namespace Cinema.Biz.Repo
                 .ToListAsync(ct);
 
             if (seats.Count == 0)
-                return false;
+                return LockSeatsResult.Fail(LockSeatsError.CannotLock);
 
             var seatMatches = new Dictionary<int, ShowtimeSeat>();
             foreach (var ss in seats)
@@ -88,7 +129,7 @@ namespace Cinema.Biz.Repo
                 if (distinctSeatIds.Contains(ss.Id))
                 {
                     if (seatMatches.TryGetValue(ss.Id, out var existing) && existing != ss)
-                        return false; // ambiguous identifier
+                        return LockSeatsResult.Fail(LockSeatsError.CannotLock); // ambiguous identifier
 
                     seatMatches[ss.Id] = ss;
                 }
@@ -96,24 +137,24 @@ namespace Cinema.Biz.Repo
                 if (distinctSeatIds.Contains(ss.SeatId))
                 {
                     if (seatMatches.TryGetValue(ss.SeatId, out var existing) && existing != ss)
-                        return false; // ambiguous identifier
+                        return LockSeatsResult.Fail(LockSeatsError.CannotLock); // ambiguous identifier
 
                     seatMatches[ss.SeatId] = ss;
                 }
             }
 
             if (seatMatches.Count != distinctSeatIds.Length)
-                return false;
+                return LockSeatsResult.Fail(LockSeatsError.CannotLock);
 
             var seatsToLock = seatMatches.Values.Distinct().ToList();
             if (seatsToLock.Count != seatMatches.Count)
-                return false; // two identifiers pointing to the same seat
+                return LockSeatsResult.Fail(LockSeatsError.CannotLock); // two identifiers pointing to the same seat
 
             if (seatsToLock.Any(ss =>
                     ShowtimeSeatStatus.IsBooked(ss.Status) ||
                     (ShowtimeSeatStatus.IsLocked(ss.Status) && ss.LockedUntil.HasValue && ss.LockedUntil.Value > now)))
             {
-                return false;
+                return LockSeatsResult.Fail(LockSeatsError.CannotLock);
             }
 
             foreach (var ss in seatsToLock)
@@ -123,7 +164,7 @@ namespace Cinema.Biz.Repo
             }
 
             await _db.SaveChangesAsync(ct);
-            return true;
+            return LockSeatsResult.Success(until);
         }
         private static TimeZoneInfo ResolveSeAsiaTimeZone()
         {
