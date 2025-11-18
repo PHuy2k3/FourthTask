@@ -37,6 +37,11 @@ export default function AdminHome() {
           icon="pi pi-ticket"
           onClick={() => nav('/admin/bookings')}
         />
+        <Button
+          label="Thống kê"
+          icon="pi pi-chart-bar"
+          onClick={() => nav('/admin/stats')}
+        />
       </div>
     </Card>
   );

@@ -1,18 +1,21 @@
+// src/pages/SeatMap.jsx
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from '../lib/api';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { useAuth } from '../context/AuthContext';
-
+import VietQrClient from '../components/VietQrClient'; // <-- đảm bảo file này tồn tại
 
 export default function SeatMap() {
   const { showtimeId } = useParams();
-  const nav = useNavigate();
   const { profile } = useAuth();
   const [data, setData] = useState(null);
   const [selectedCodes, setSelectedCodes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // new: payment modal data (null = đóng)
+  const [paymentData, setPaymentData] = useState(null);
 
   const fetchShowtime = useCallback(async () => {
     const { data } = await api.get(`/api/showtimes/${showtimeId}`);
@@ -32,11 +35,12 @@ export default function SeatMap() {
         const latest = await fetchShowtime();
         if (mounted) setData(latest);
       } catch {
-        alert('Không tải được sơ đồ ghế'); nav('/showtimes');
+        alert('Không tải được sơ đồ ghế');
+        // nếu bạn không dùng route để điều hướng lại showtimes, bạn có thể set một trạng thái khác hoặc reload
       }
     })();
     return () => (mounted = false);
-  }, [fetchShowtime, nav]);
+  }, [fetchShowtime]);
 
   const seatGrid = useMemo(() => {
     if (!data?.seats) return [];
@@ -119,8 +123,28 @@ export default function SeatMap() {
         bookingPayload.userId = parsedUserId;
       }
       const { data: booking } = await api.post('/api/bookings', bookingPayload);
-      alert(`Đặt vé thành công: ${booking.orderCode} - Tổng ${booking.amount}`);
-      nav('/showtimes');
+
+      // ---- NEW: open payment modal with booking info (no route)
+      const bookingId =
+        booking?.id ??
+        booking?.bookingId ??
+        booking?.BookingId ??
+        booking?.orderId ??
+        booking?.orderCode ??
+        null;
+
+      const amount = booking?.amount ?? booking?.total ?? booking?.price ?? null;
+      const orderCode = booking?.orderCode ?? booking?.orderNo ?? booking?.id ?? null;
+
+      setPaymentData({
+        bookingId,
+        amount,
+        orderCode,
+        rawBooking: booking
+      });
+
+      // optionally clear selection
+      setSelectedCodes([]);
     } catch (e) {
       if (e?.message === 'LOCK_FAILED') {
         alert('Không thể giữ ghế. Vui lòng thử lại.');
@@ -133,7 +157,7 @@ export default function SeatMap() {
               alert('Một hoặc nhiều ghế không còn khả dụng. Vui lòng chọn lại.');
             }
           } catch {
-            // ignore refresh errors, primary error message shown below
+            // ignore refresh errors
           }
         }
 
@@ -174,36 +198,103 @@ export default function SeatMap() {
 
   if (!data) return null;
   return (
-    <Card title={`Chọn ghế - ${data.movie?.title ?? ''} (${data.room?.name ?? ''})`}>
-      <div className="flex flex-column gap-3">
-        <div className="text-center mb-2">Màn hình</div>
-        <div className="surface-200 h-2rem border-round mb-3"></div>
+    <>
+      <Card title={`Chọn ghế - ${data.movie?.title ?? ''} (${data.room?.name ?? ''})`}>
+        <div className="flex flex-column gap-3">
+          <div className="text-center mb-2">Màn hình</div>
+          <div className="surface-200 h-2rem border-round mb-3"></div>
 
-        {seatGrid.map(([row, arr]) => (
-          <div key={row} className="flex gap-2 align-items-center">
-            <div className="w-2rem text-right">{row}</div>
-            <div className="flex gap-2 flex-wrap">
-              {arr.map(ss => {
-                const code = ss.seat.code;
-                const isSel = selectedCodes.includes(code);
-                const disabled = ss.status !== 'Available';
-                return (
-                  <Button key={ss.id}
-                          label={code}
-                          className={`p-button-sm ${isSel ? '' : 'p-button-outlined'}`}
-                          disabled={disabled}
-                          onClick={() => toggle(ss)} />
-                );
-              })}
+          {seatGrid.map(([row, arr]) => (
+            <div key={row} className="flex gap-2 align-items-center">
+              <div className="w-2rem text-right">{row}</div>
+              <div className="flex gap-2 flex-wrap">
+                {arr.map(ss => {
+                  const code = ss.seat.code;
+                  const isSel = selectedCodes.includes(code);
+                  const disabled = ss.status !== 'Available';
+                  return (
+                    <Button key={ss.id}
+                            label={code}
+                            className={`p-button-sm ${isSel ? '' : 'p-button-outlined'}`}
+                            disabled={disabled}
+                            onClick={() => toggle(ss)} />
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+
+          <div className="flex gap-2 mt-3">
+            <Button label="Giữ & Đặt vé" icon="pi pi-shopping-cart" loading={loading} onClick={doLockAndBook} />
+            <Button label="Quay lại" icon="pi pi-arrow-left" severity="secondary" onClick={() => {
+              // since you don't use routing, you may want to implement your own "back" behavior
+              // e.g., window.history.back() or custom state change. Here we use history.back as fallback.
+              window.history.back();
+            }} />
+          </div>
+        </div>
+      </Card>
+
+      {/* Payment modal (rendered in the same page) */}
+      {paymentData && (
+        <div style={modalBackdropStyle}>
+          <div style={modalStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ margin: 0 }}>Thanh toán — Booking #{paymentData.bookingId ?? paymentData.orderCode}</h3>
+              <button onClick={() => setPaymentData(null)} style={closeBtnStyle}>Đóng ✕</button>
+            </div>
+
+            <div style={{ marginTop: 12 }}>
+              <p style={{ margin: 0 }}>
+                Tổng tiền: <strong>{paymentData.amount ?? '—'}</strong>
+                {paymentData.orderCode ? <> &nbsp;|&nbsp; Mã: <strong>{paymentData.orderCode}</strong></> : null}
+              </p>
+            </div>
+
+            <div style={{ marginTop: 12 }}>
+              <VietQrClient
+                defaultAmount={paymentData.amount ? String(paymentData.amount) : ''}
+                defaultOrderRef={paymentData.orderCode ? String(paymentData.orderCode) : (paymentData.bookingId ? String(paymentData.bookingId) : '')}
+                defaultName={data?.movie?.title ? String(data.movie.title) : undefined}
+                defaultCity={data?.room?.name ? String(data.room.name) : undefined}
+              />
+            </div>
+
+            <div style={{ marginTop: 12, textAlign: 'right' }}>
+              <Button label="Đóng" className="p-button-text" onClick={() => setPaymentData(null)} />
             </div>
           </div>
-        ))}
-
-        <div className="flex gap-2 mt-3">
-          <Button label="Giữ & Đặt vé" icon="pi pi-shopping-cart" loading={loading} onClick={doLockAndBook} />
-          <Button label="Quay lại" icon="pi pi-arrow-left" severity="secondary" onClick={() => nav('/showtimes')} />
         </div>
-      </div>
-    </Card>
+      )}
+    </>
   );
 }
+
+/* Simple inline styles for modal — bạn có thể đưa vào CSS/LESS/SASS của project */
+const modalBackdropStyle = {
+  position: 'fixed',
+  inset: 0,
+  backgroundColor: 'rgba(0,0,0,0.5)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 9999
+};
+
+const modalStyle = {
+  width: 'min(980px, 96%)',
+  maxHeight: '90vh',
+  overflow: 'auto',
+  background: '#fff',
+  padding: 18,
+  borderRadius: 8,
+  boxShadow: '0 8px 24px rgba(0,0,0,0.2)'
+};
+
+const closeBtnStyle = {
+  background: 'transparent',
+  border: 'none',
+  cursor: 'pointer',
+  fontSize: 18,
+  lineHeight: 1
+};

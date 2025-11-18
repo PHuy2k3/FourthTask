@@ -88,6 +88,7 @@ export default function AdminBookings() {
               <small className="text-500">{r.showtime?.startAt ? new Date(r.showtime.startAt).toLocaleString('vi-VN') : ''}</small>
             </div>
           )}
+          style={{width:"15rem"}}
         />
         <Column
           header="Ghế"

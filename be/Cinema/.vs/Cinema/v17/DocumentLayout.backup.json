@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\controllers\\bookingscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8D9FBBF6-C36F-438F-A66F-755CEE554615}|Cinema.Api\\Cinema.Api.csproj|solutionrelative:cinema.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{153CBA59-6EF8-48E9-875D-0E4488F7FE49}|Cinema.Biz\\Cinema.Biz.csproj|d:\\cmc_task\\fourth-task\\be\\cinema\\cinema.biz\\repository\\showtimerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -302,7 +302,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -362,7 +362,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Program.cs",
               "RelativeDocumentMoniker": "Cinema.Api\\Program.cs",
@@ -374,7 +374,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "AuthController.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\AuthController.cs",
@@ -382,17 +382,18 @@
               "RelativeToolTip": "Cinema.Api\\Controllers\\AuthController.cs",
               "ViewState": "AgIAABwAAAAAAAAAAAAAwCkAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-17T01:44:16.667Z"
+              "WhenOpened": "2025-11-17T01:44:16.667Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "BookingsController.cs",
               "DocumentMoniker": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\BookingsController.cs",
               "RelativeDocumentMoniker": "Cinema.Api\\Controllers\\BookingsController.cs",
               "ToolTip": "D:\\CMC_Task\\fourth-task\\be\\Cinema\\Cinema.Api\\Controllers\\BookingsController.cs",
               "RelativeToolTip": "Cinema.Api\\Controllers\\BookingsController.cs",
-              "ViewState": "AgIAAGoAAAAAAAAAAAAAAG4AAAATAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAABKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-09T03:19:27.948Z",
               "EditorCaption": ""

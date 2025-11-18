@@ -21,6 +21,7 @@ import { Menubar } from 'primereact/menubar';
 import { Button } from 'primereact/button';
 import { Avatar } from 'primereact/avatar';
 import { Menu } from 'primereact/menu';
+import AdminStats from './pages/admin/AdminStats';
 
 /* --------- Guards --------- */
 function PrivateRoute({ children }) {
@@ -208,6 +209,16 @@ export default function App() {
             <Shell>
               <AdminRoute>
                 <AdminRooms />
+              </AdminRoute>
+            </Shell>
+          }
+        />
+        <Route
+          path="/admin/stats"
+          element={
+            <Shell>
+              <AdminRoute>
+                <AdminStats />
               </AdminRoute>
             </Shell>
           }
