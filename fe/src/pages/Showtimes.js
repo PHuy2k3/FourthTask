@@ -35,9 +35,9 @@ export default function Showtimes() {
 
       <DataTable value={rows} size="small" tableStyle={{ minWidth: 700 }}>
         <Column field="id" header="ID" style={{ width: '6rem' }} />
-        <Column field="movie.title" header="Phim" />
-        <Column field="room.name" header="Phòng" />
-        <Column field="room.cinema.name" header="Rạp" />
+        <Column field="movieTitle" header="Phim" />
+        <Column field="roomName" header="Phòng" />
+        <Column field="cinemaName" header="Rạp" />
         <Column header="Giờ" body={(r) => dayjs(r.startAt).format('HH:mm DD/MM')} />
         <Column header="Ghế" body={(r) =>
           <Button label="Chọn ghế" icon="pi pi-th-large" onClick={() => nav(`/seatmap/${r.id}`)} />

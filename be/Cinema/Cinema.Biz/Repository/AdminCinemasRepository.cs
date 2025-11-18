@@ -1,16 +1,15 @@
-﻿// Cinema.Biz/Admin/CinemaAdminRepository.cs
-using Cinema.Biz.Common;
+﻿using Cinema.Biz.Common;
 using Cinema.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Biz.Admin;
 
-public class CinemaAdminRepository : ICinemaAdminRepository
+public class AdminCinemasRepository : ICinemaAdminRepository
 {
     private readonly AppDbContext _db;
     // private readonly IUserContext _user; // nếu cần check role ở đây
 
-    public CinemaAdminRepository(AppDbContext db/*, IUserContext user*/)
+    public AdminCinemasRepository(AppDbContext db/*, IUserContext user*/)
     {
         _db = db;
         // _user = user;

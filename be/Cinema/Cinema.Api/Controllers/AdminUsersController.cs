@@ -7,7 +7,7 @@ namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/admin/users")]
-[AllowAnonymous] // TẠM THỜI; khi test xong đổi thành [Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class AdminUsersController : ControllerBase
 {
     private readonly AppDbContext _db;

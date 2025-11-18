@@ -8,7 +8,7 @@ namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/admin/departments")]
-[AllowAnonymous]
+[Authorize(Roles = "Admin")]
 public class AdminDepartmentsController : ControllerBase
 {
     private readonly IAdminDepartmentsRepository _biz;

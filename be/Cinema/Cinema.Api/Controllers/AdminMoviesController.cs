@@ -7,8 +7,7 @@ namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/admin/movies")]
-// TẠM THỜI mở ẩn danh để test 404 vs 401. Khi OK thì đổi lại [Authorize(Roles = "Admin")]
-[AllowAnonymous]
+[Authorize(Roles = "Admin")]
 public class AdminMoviesController : ControllerBase
 {
     private readonly AppDbContext _db;

@@ -13,7 +13,7 @@ namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/admin/rooms")]
-[AllowAnonymous]
+[Authorize(Roles = "Admin")]
 public class AdminRoomsController : ControllerBase
 {
     private readonly AppDbContext _db;

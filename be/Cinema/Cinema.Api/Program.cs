@@ -26,10 +26,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 
 // -------------------- DEPENDENCY INJECTION --------------------
-builder.Services.AddScoped<ICinemaAdminRepository, CinemaAdminRepository>();
+builder.Services.AddScoped<ICinemaAdminRepository, AdminCinemasRepository>();
 builder.Services.AddScoped<IAdminDepartmentsRepository, DepartmentAdminRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IShowtimeRepository, ShowtimeRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IBookingRepository>(sp =>
 {
     var db = sp.GetRequiredService<AppDbContext>();

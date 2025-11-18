@@ -9,7 +9,7 @@ namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/admin/showtimes")]
-[Authorize(Roles = "Admin")] // cần token admin; để test nhanh có thể tạm đổi thành [AllowAnonymous]
+[Authorize(Roles = "Admin")]
 public class AdminShowtimesController : ControllerBase
 {
     private readonly AppDbContext _db;
@@ -177,8 +177,8 @@ public class AdminShowtimesController : ControllerBase
     {
         var st = await _db.Showtimes.Include(s => s.Seats).FirstOrDefaultAsync(s => s.Id == id, ct);
         if (st is null) return NotFound();
-        foreach (var ss in st.Seats.Where(x => ShowtimeSeatStatus.IsAvailable(x.Status)))
-            return Conflict("Cannot delete: there are booked seats.");
+        //foreach (var ss in st.Seats.Where(x => ShowtimeSeatStatus.IsAvailable(x.Status)))
+        //    return Conflict("Cannot delete: there are booked seats.");
 
         _db.ShowtimeSeats.RemoveRange(st.Seats);
         _db.Showtimes.Remove(st);

@@ -1,12 +1,15 @@
 ﻿// Cinema.Api/Controllers/AdminCinemasController.cs
 using Cinema.Biz.Admin;
 using Cinema.Biz.Common;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Api.Controllers;
 
 [ApiController]
 [Route("api/admin/cinemas")]
+[Authorize(Roles = "Admin")]
 public class AdminCinemasController : ControllerBase
 {
     private readonly ICinemaAdminRepository _biz;
